@@ -1,14 +1,7 @@
 import m from "mithril";
 import { Collapsible, FlatButton, Tabs } from "mithril-materialized";
 import { LayoutForm, UIForm } from "mithril-ui-form";
-import {
-	Dashboards,
-	defaultModel,
-	Literature,
-	LITERATURE_TYPE,
-	TECHNOLOGY_CATEGORY,
-	User,
-} from "../models";
+import { Dashboards, defaultModel, Literature, LITERATURE_TYPE, User } from "../models";
 import { MeiosisComponent } from "../services";
 
 const literatureForm = [
@@ -55,16 +48,6 @@ const literatureForm = [
 	},
 ] as UIForm;
 
-// const literatureForm = [
-// 	{
-// 		id: "literature",
-// 		label: "Add literature",
-// 		repeat: true,
-// 		pageSize: 200,
-// 		type: literatureItemForm,
-// 	},
-// ] as UIForm;
-
 const userForm = [
 	{ id: "id", type: "none", autogenerate: "id" },
 	{
@@ -72,6 +55,7 @@ const userForm = [
 		label: "Name",
 		icon: "title",
 		type: "text",
+		required: true,
 		className: "col s4",
 	},
 	{
@@ -79,6 +63,7 @@ const userForm = [
 		label: "Email",
 		icon: "email",
 		type: "email",
+		required: true,
 		className: "col s4",
 	},
 	{
@@ -86,72 +71,10 @@ const userForm = [
 		label: "Phone",
 		icon: "phone",
 		type: "text",
+		required: true,
 		className: "col s4",
 	},
 ] as UIForm;
-// const usersForm = [
-// 	{
-// 		id: "users",
-// 		label: "Add user",
-// 		repeat: true,
-// 		filterLabel: "name",
-// 		pageSize: 100,
-// 		type: userForm,
-// 	},
-// ] as UIForm;
-
-const technologyForm = (users: User[]) => {
-	return [
-		{ id: "id", type: "none", autogenerate: "id" },
-		{ id: "technology", label: "Technology", type: "text", className: "col s8" },
-		{
-			id: "category",
-			label: "Category",
-			type: "select",
-			multiple: true,
-			options: [
-				{ id: TECHNOLOGY_CATEGORY.HARDWARE, label: "Hardware" },
-				{ id: TECHNOLOGY_CATEGORY.BIO_ENHANCEMENT, label: "Bio-enhancement" },
-				{
-					id: TECHNOLOGY_CATEGORY.PHARMACOLOGICAL_SUBSTANCES_SUPPLEMENTS_AND_NUTRITION,
-					label: "Pharmacological substances, supplements and nutrition",
-				},
-				{ id: TECHNOLOGY_CATEGORY.TRAINING, label: "Training" },
-				{ id: TECHNOLOGY_CATEGORY.SELF_REGULATION, label: "Self-regulation" },
-				{ id: TECHNOLOGY_CATEGORY.NUTRITION, label: "Nutrition" },
-				{ id: TECHNOLOGY_CATEGORY.OTHER, label: "Other" },
-			],
-			className: "col s4",
-		},
-		{
-			id: "owner",
-			label: "Owner",
-			type: "select",
-			options: users.map((u) => ({ id: u.id, label: u.name })),
-			className: "col s4 m3",
-		},
-		{
-			id: "reviewer",
-			label: "Reviewer",
-			type: "select",
-			multiple: true,
-			options: users.map((u) => ({ id: u.id, label: u.name })),
-			className: "col s8 m9",
-		},
-	];
-};
-
-const technologiesForm = (users: User[], _literature: Literature[]) =>
-	[
-		{
-			id: "technologies",
-			label: "Add technology",
-			repeat: true,
-			pageSize: 100,
-			filterLabel: "technology",
-			type: technologyForm(users),
-		},
-	] as UIForm;
 
 export const SettingsPage: MeiosisComponent = () => {
 	let newLiterature = {} as Literature;
@@ -178,17 +101,6 @@ export const SettingsPage: MeiosisComponent = () => {
 							{
 								tabWidth: "auto",
 								tabs: [
-									{
-										title: "Technologies",
-										vnode: m(
-											LayoutForm,
-											{
-												form: technologiesForm(model.users, model.literature),
-												obj: model,
-												onchange: () => saveModel(model),
-											},
-										),
-									},
 									{
 										title: "Literature",
 										vnode: m(

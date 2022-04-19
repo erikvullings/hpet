@@ -2,8 +2,8 @@ import m, { RouteDefs } from "mithril";
 import { Dashboards, IDashboard } from "../models";
 import { appActions, cells } from "./meiosis";
 import { Layout } from "../components/layout";
-import { AboutPage, HomePage, AllWordsPage } from "../components";
-import { SettingsPage } from "../components/settings-page";
+import { AboutPage, HomePage, AllWordsPage, TechnologyPage, SettingsPage } from "../components";
+import { TechnologyOverviewPage } from "../components/technology-overview-page";
 
 class RoutingService {
 	private dashboards!: ReadonlyArray<IDashboard>;
@@ -97,6 +97,22 @@ export const routingSvc: RoutingService = new RoutingService([
 		route: "/",
 		visible: true,
 		component: HomePage,
+	},
+	{
+		id: Dashboards.TECHNOLOGIES,
+		title: "TECHNOLOGY OVERVIEW",
+		icon: "display_settings",
+		route: "/technologies",
+		visible: true,
+		component: TechnologyOverviewPage,
+	},
+	{
+		id: Dashboards.TECHNOLOGY,
+		title: "TECHNOLOGY",
+		icon: "military_tech",
+		route: "/technology",
+		visible: false,
+		component: TechnologyPage,
 	},
 	{
 		id: Dashboards.SETTINGS,
