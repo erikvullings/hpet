@@ -27,7 +27,7 @@ module.exports = (env) => {
     plugins: [
       new Dotenv(),
       new HtmlWebpackPlugin({
-        title: 'Human Performance Enhancing Technologies',
+        title: 'Database for Human Enhancement Interventions',
         favicon: './src/favicon.ico',
         meta: { viewport: 'width=device-width, initial-scale=1' },
       }),
@@ -36,7 +36,7 @@ module.exports = (env) => {
           {
             attributes: {
               property: 'og:title',
-              content: 'Human Performance Enhancing Technologies',
+              content: 'Database for Human Enhancement Interventions',
             },
           },
           {
@@ -66,7 +66,7 @@ module.exports = (env) => {
           {
             attributes: {
               property: 'og:image:alt',
-              content: 'Human Performance Enhancing Technologies',
+              content: 'Database for Human Enhancement Interventions',
             },
           },
           {

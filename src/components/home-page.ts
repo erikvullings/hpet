@@ -39,7 +39,7 @@ export const HomePage: MeiosisComponent = () => {
 					m(
 						".overlay.center",
 						{ style: "position: absolute; width: 100%" },
-						[m("h3.white-text", "Human Performance Enhancing Technologies")],
+						[m("h3.bold", "Database for Human Enhancement Interventions")],
 					),
 					m("img.responsive-img.center", { src: background }),
 					m(
