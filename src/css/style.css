@@ -475,10 +475,11 @@ ul.projects > li > span.project-id {
 
 /* For the options' label */
 .input-field.options > label {
-  top: -2.5rem;
+  top: -2.7rem;
+  font-size: 0.8rem;
 }
 .input-field.options {
-  margin-top: 3rem;
+  margin-top: 1rem;
 }
 
 .muf-rating {
@@ -594,4 +595,8 @@ ul.projects > li > span.project-id {
     display: inline-block;
     margin: 15px;
   }
+}
+
+.input-field {
+  margin-top: 0;
 }

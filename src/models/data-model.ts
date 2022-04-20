@@ -15,7 +15,7 @@ export const defaultModel = {
 } as DataModel;
 
 export enum TECHNOLOGY_CATEGORY {
-	HARDWARE,
+	HARDWARE = 1,
 	BIO_ENHANCEMENT,
 	PHARMACOLOGICAL_SUBSTANCES_SUPPLEMENTS_AND_NUTRITION,
 	TRAINING,
@@ -25,17 +25,17 @@ export enum TECHNOLOGY_CATEGORY {
 }
 
 export enum STATUS {
-	FIRST_DRAFT,
+	FIRST_DRAFT = 1,
 	READY_FOR_REVIEW,
 	UNDER_REVIEW,
 	REVIEWED,
 	FINISHED,
 }
 
-export enum HPE_CLASSIFICATION { OPTIMIZATION, ENHANCEMENT, DEGRADATION }
+export enum HPE_CLASSIFICATION { OPTIMIZATION = 1, ENHANCEMENT, DEGRADATION }
 
 export enum MAIN_CAPABILITY {
-	COGNITION,
+	COGNITION = 1,
 	PHYSICAL,
 	MENTAL,
 	SOCIAL,
@@ -44,7 +44,7 @@ export enum MAIN_CAPABILITY {
 }
 
 export enum COGNITION_CAPABILITY {
-	SITUATION_AWARENESS,
+	SITUATION_AWARENESS = 1,
 	EXECUTIVE_FUNCTIONS,
 	LONG_TERM_MEMORY,
 	SHORT_TERM_MEMORY,
@@ -65,7 +65,7 @@ export enum COGNITION_CAPABILITY {
 }
 
 export enum PHYSICAL_CAPABILITY {
-	STRENGTH,
+	STRENGTH = 1,
 	ENDURANCE,
 	RECOVERY,
 	SPEED,
@@ -79,7 +79,7 @@ export enum PHYSICAL_CAPABILITY {
 }
 
 export enum MENTAL_CAPABILITY {
-	EMOTION,
+	EMOTION = 1,
 	STRESS,
 	RESILIENCE,
 	MOTIVATION,
@@ -90,13 +90,13 @@ export enum MENTAL_CAPABILITY {
 }
 
 export enum SOCIAL_CAPABILITY {
-	COLLABORATION,
+	COLLABORATION = 1,
 	COMMUNICATION,
 	SOCIAL_INTELLIGENCE,
 }
 
 export enum PERSONALITY_CAPABILITY {
-	LEADERSHIP,
+	LEADERSHIP = 1,
 	OBEDIENCE,
 	MORALE,
 	RISK_TAKING,
@@ -105,18 +105,18 @@ export enum PERSONALITY_CAPABILITY {
 
 export enum YES_NO {
 	//CAN BE USED AS A BOOSTER
-	YES,
+	YES = 1,
 	NO,
 }
 
-export enum INVASIVENESS_OBTRUSIVENESS { LOW, MEDIUM, HIGH }
+export enum INVASIVENESS_OBTRUSIVENESS { LOW = 1, MEDIUM, HIGH }
 
-export enum EFFECT_DIRECTION { NEGATIVE, POSITIVE }
+export enum EFFECT_DIRECTION { NEGATIVE = 1, POSITIVE }
 
-export enum MATURITY { LOW, MEDIUM, HIGH }
+export enum MATURITY { LOW = 1, MEDIUM, HIGH }
 
 export enum LITERATURE_TYPE {
-	CASE_STUDY,
+	CASE_STUDY = 1,
 	THESIS,
 	REPORT,
 	TECHNICAL_REPORT,
@@ -132,16 +132,16 @@ export enum LITERATURE_TYPE {
 	META_ANALYSIS_PR,
 }
 
-export enum EVIDENCE_LEVEL { A, B, C }
+export enum EVIDENCE_LEVEL { A = 1, B, C }
 
 export enum EVIDENCE_DIRECTION {
-	GENERALLY_IN_FAVOR,
+	GENERALLY_IN_FAVOR = 1,
 	GENERALLY_AGAINST,
 	UNDECIDED,
 }
 
 export enum AVAILABILITY {
-	YES_WITHIN_THE_NETHERLANDS,
+	YES_WITHIN_THE_NETHERLANDS = 1,
 	YES_WITHIN_THE_EU,
 	YES_OUTSIDE_THE_EU,
 	NO,
@@ -163,8 +163,9 @@ export type Technology = {
 	reviewer: User[],
 	status: STATUS,
 	technology: string,
-	category: TECHNOLOGY_CATEGORY,
+	/** Specific application */
 	application: string,
+	category: TECHNOLOGY_CATEGORY,
 	hpeClassification: HPE_CLASSIFICATION,
 	/** Similar technologies */
 	similar: ID[],
@@ -174,8 +175,8 @@ export type Technology = {
 	specificCap: string[],
 	invasive: INVASIVENESS_OBTRUSIVENESS,
 	mechanism: string,
+	booster: boolean,
 	effectDuration: string,
-	booster: YES_NO,
 	/** Effect incubation */
 	incubation?: string,
 	/** Individual differences */
@@ -187,15 +188,16 @@ export type Technology = {
 	/** Ethical considerations */
 	ethical: string,
 	/** Examples of the intervention being used in practice */
-	examples: string[],
+	examples: string,
 	/** Literature ID's */
 	litID: ID[],
 	/** Evidence direction */
 	evidenceDir: EVIDENCE_DIRECTION,
 	/** Evidence score */
 	evidenceScore: EVIDENCE_LEVEL,
-	availability: string,
-	url: string[],
+	availability: AVAILABILITY,
+	/** Image link */
+	url: string,
 };
 
 export type User = { id: ID, name: string, phone?: string, email?: string };
