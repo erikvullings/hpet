@@ -1,12 +1,12 @@
-@media only screen and (min-width: 601px) {
+/* @media only screen and (min-width: 601px) {
   .container {
     width: 95%;
   }
-}
+} */
 
-.container {
+/* .container {
   max-width: unset;
-}
+} */
 body {
   font-size: 18px;
 }
@@ -126,7 +126,7 @@ a {
     page-break-inside: avoid; /* or 'auto' */
   }
   main::after {
-    content: 'Copyright DRIVER+';
+    content: 'Copyright TNO';
     display: block;
     text-align: center;
   }
@@ -599,4 +599,12 @@ ul.projects > li > span.project-id {
 
 .input-field {
   margin-top: 0;
+}
+.responsive-img.center {
+  margin: 0 auto 0 auto;
+  display: block;
+}
+.col.bottom-margin0,
+.row.bottom-margin0 {
+  margin-bottom: 0;
 }

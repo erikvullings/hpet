@@ -36,11 +36,11 @@ export const HomePage: MeiosisComponent = () => {
 				"div",
 				{ style: "position: relative;" },
 				[
-					m(
-						".overlay.center",
-						{ style: "position: absolute; width: 100%" },
-						[m("h3.bold", "Database for Human Enhancement Interventions")],
-					),
+					// m(
+					// 	".overlay.center",
+					// 	{ style: "position: absolute; width: 100%" },
+					// 	[m("h3.bold", "Database for Human Enhancement Interventions")],
+					// ),
 					m("img.responsive-img.center", { src: background }),
 					m(
 						".buttons.center",
@@ -55,17 +55,17 @@ export const HomePage: MeiosisComponent = () => {
 									modalId: "clearAll",
 								},
 							),
-							typeof model.version === "number" && m(
-								Button,
-								{
-									iconName: "edit",
-									className: "btn-large",
-									label: "Continue",
-									onclick: () => {
-										routingSvc.switchTo(Dashboards.OVERVIEW);
-									},
-								},
-							),
+							// typeof model.version === "number" && m(
+							// 	Button,
+							// 	{
+							// 		iconName: "edit",
+							// 		className: "btn-large",
+							// 		label: "Continue",
+							// 		onclick: () => {
+							// 			routingSvc.switchTo(Dashboards.OVERVIEW);
+							// 		},
+							// 	},
+							// ),
 							m("a#downloadAnchorElem", { style: "display:none" }),
 							m(
 								Button,

@@ -1,5 +1,5 @@
 import m, { FactoryComponent } from "mithril";
-import setup, { MeiosisCell, Update } from "meiosis-setup/mergerino";
+import setup, { MeiosisCell } from "meiosis-setup/mergerino";
 import { routingSvc } from ".";
 import { Dashboards, DataModel, defaultModel, Technology } from "../models";
 
@@ -12,7 +12,6 @@ export interface State {
 }
 
 export interface Actions {
-	update: Update<State>,
 	setPage: (page: Dashboards) => void,
 	changePage: (
 		page: Dashboards,
@@ -20,6 +19,7 @@ export interface Actions {
 		query?: Record<string, string | number | undefined>,
 	) => void,
 	saveModel: (ds: DataModel) => void,
+	setTechnology: (curTech: Technology) => void,
 }
 
 export type MeiosisComponent<T extends { [key: string]: any } = {}> = FactoryComponent<
@@ -30,7 +30,6 @@ export const appActions: (cell: MeiosisCell<State>) => Actions = ({ update }) =>
 	// addDucks: (cell, amount) => {
 	//   cell.update({ ducks: (value) => value + amount });
 	// },
-	update,
 	setPage: (page) => update({ page }),
 	changePage: (page, params, query) => {
 		routingSvc && routingSvc.switchTo(page, params, query);
@@ -40,6 +39,7 @@ export const appActions: (cell: MeiosisCell<State>) => Actions = ({ update }) =>
 		localStorage.setItem(MODEL_KEY, JSON.stringify(model));
 		update({ model: () => model });
 	},
+	setTechnology: (curTech: Technology) => update({ curTech }),
 });
 
 const ds = localStorage.getItem(MODEL_KEY);

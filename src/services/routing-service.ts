@@ -2,7 +2,7 @@ import m, { RouteDefs } from "mithril";
 import { Dashboards, IDashboard } from "../models";
 import { appActions, cells } from "./meiosis";
 import { Layout } from "../components/layout";
-import { AboutPage, HomePage, AllWordsPage, TechnologyPage, SettingsPage } from "../components";
+import { AboutPage, HomePage, TechnologyPage, SettingsPage } from "../components";
 import { TechnologyOverviewPage } from "../components/technology-overview-page";
 
 class RoutingService {
@@ -111,25 +111,25 @@ export const routingSvc: RoutingService = new RoutingService([
 		title: "TECHNOLOGY",
 		icon: "military_tech",
 		route: "/technology",
-		visible: false,
+		visible: true,
 		component: TechnologyPage,
 	},
 	{
 		id: Dashboards.SETTINGS,
-		title: "SETTINGS",
-		icon: "settings",
-		route: "/settings",
+		title: "LITERATURE & USERS",
+		icon: "menu_book",
+		route: "/literature",
 		visible: true,
 		component: SettingsPage,
 	},
-	{
-		id: Dashboards.TAXONOMY,
-		title: "TAXONOMY",
-		icon: "book",
-		route: "/taxonomy",
-		visible: true,
-		component: AllWordsPage,
-	},
+	// {
+	// 	id: Dashboards.TAXONOMY,
+	// 	title: "TAXONOMY",
+	// 	icon: "book",
+	// 	route: "/taxonomy",
+	// 	visible: true,
+	// 	component: AllWordsPage,
+	// },
 	{
 		id: Dashboards.ABOUT,
 		title: "About",

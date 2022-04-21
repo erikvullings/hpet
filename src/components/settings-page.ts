@@ -4,6 +4,29 @@ import { LayoutForm, UIForm } from "mithril-ui-form";
 import { Dashboards, defaultModel, Literature, LITERATURE_TYPE, User } from "../models";
 import { MeiosisComponent } from "../services";
 
+export const literatureTypeOptions = [
+	{ id: LITERATURE_TYPE.CASE_STUDY, label: "Case study" },
+	{ id: LITERATURE_TYPE.THESIS, label: "Thesis" },
+	{ id: LITERATURE_TYPE.REPORT, label: "Report" },
+	{ id: LITERATURE_TYPE.TECHNICAL_REPORT, label: "Technical report" },
+	{ id: LITERATURE_TYPE.PRODUCER_WEBSITE, label: "Producer website" },
+	{ id: LITERATURE_TYPE.WHITE_PAPER, label: "White paper" },
+	{ id: LITERATURE_TYPE.CONFERENCE_PROCEEDING, label: "Conference proceedings" },
+	{ id: LITERATURE_TYPE.PATENT, label: "Patent" },
+	{ id: LITERATURE_TYPE.POPULAR_MEDIA, label: "Popular media" },
+	{ id: LITERATURE_TYPE.CONSENSUS_STATEMENT, label: "Consensus statement" },
+	{ id: LITERATURE_TYPE.EMPERICAL_PR, label: "Emperical (Peer Reviewed)" },
+	{ id: LITERATURE_TYPE.REVIEW_PR, label: "Review (Peer Reviewed)" },
+	{
+		id: LITERATURE_TYPE.SYSTEMATIC_REVIEW_PR,
+		label: "Systematic review (Peer Reviewed)",
+	},
+	{
+		id: LITERATURE_TYPE.META_ANALYSIS_PR,
+		label: "Meta analysis (Peer Reviewed)",
+	},
+];
+
 const literatureForm = [
 	{ id: "id", type: "none", autogenerate: "id" },
 	{ id: "doi", label: "DOI", required: true, type: "text", className: "col s3" },
@@ -19,31 +42,7 @@ const literatureForm = [
 		label: "Type",
 		required: true,
 		type: "select",
-		options: [
-			{ id: LITERATURE_TYPE.CASE_STUDY, label: "Case study" },
-			{ id: LITERATURE_TYPE.THESIS, label: "Thesis" },
-			{ id: LITERATURE_TYPE.REPORT, label: "Report" },
-			{ id: LITERATURE_TYPE.TECHNICAL_REPORT, label: "Technical report" },
-			{ id: LITERATURE_TYPE.PRODUCER_WEBSITE, label: "Producer website" },
-			{ id: LITERATURE_TYPE.WHITE_PAPER, label: "White paper" },
-			{
-				id: LITERATURE_TYPE.CONFERENCE_PROCEEDING,
-				label: "Conference proceedings",
-			},
-			{ id: LITERATURE_TYPE.PATENT, label: "Patent" },
-			{ id: LITERATURE_TYPE.POPULAR_MEDIA, label: "Popular media" },
-			{ id: LITERATURE_TYPE.CONSENSUS_STATEMENT, label: "Consensus statement" },
-			{ id: LITERATURE_TYPE.EMPERICAL_PR, label: "Emperical (Peer Reviewed)" },
-			{ id: LITERATURE_TYPE.REVIEW_PR, label: "Review (Peer Reviewed)" },
-			{
-				id: LITERATURE_TYPE.SYSTEMATIC_REVIEW_PR,
-				label: "Systematic review (Peer Reviewed)",
-			},
-			{
-				id: LITERATURE_TYPE.META_ANALYSIS_PR,
-				label: "Meta analysis (Peer Reviewed)",
-			},
-		],
+		options: literatureTypeOptions,
 		className: "col s4",
 	},
 ] as UIForm;
@@ -73,6 +72,14 @@ const userForm = [
 		type: "text",
 		required: true,
 		className: "col s4",
+	},
+	{
+		id: "url",
+		label: "Image link",
+		icon: "link",
+		type: "url",
+		required: false,
+		className: "col s12",
 	},
 ] as UIForm;
 
@@ -267,6 +274,13 @@ export const SettingsPage: MeiosisComponent = () => {
 														onclick: () => {
 															if (addUser && canSaveUser) {
 																model.users.push(newUser);
+																model.users =
+																	model.users.sort(
+																		(a, b) =>
+																			a.name.split(" ").pop()!.localeCompare(
+																				b.name.split(" ").pop()!,
+																			),
+																	);
 																saveModel(model);
 																newUser = {} as User;
 																canSaveUser = false;

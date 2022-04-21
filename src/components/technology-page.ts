@@ -1,262 +1,23 @@
 import m from "mithril";
-import { FlatButton } from "mithril-materialized";
+import { FlatButton, Icon } from "mithril-materialized";
 import { UIForm, LayoutForm } from "mithril-ui-form";
-import {
-	AVAILABILITY,
-	Dashboards,
-	defaultModel,
-	EVIDENCE_DIRECTION,
-	EVIDENCE_LEVEL,
-	HPE_CLASSIFICATION,
-	INVASIVENESS_OBTRUSIVENESS,
-	MAIN_CAPABILITY,
-	MATURITY,
-	STATUS,
-	Technology,
-	TECHNOLOGY_CATEGORY,
-	User,
-} from "../models";
+import { Dashboards, defaultModel, Technology } from "../models";
 import { MeiosisComponent } from "../services";
-
-const technologyForm = (
-	users: User[],
-	technologyOptions: Array<{ id: string, label: string }>,
-	literatureOptions: Array<{ id: string, label: string }>,
-) => {
-	return [
-		{ id: "id", type: "none", autogenerate: "id" },
-		{
-			id: "technology",
-			label: "Technology",
-			type: "text",
-			className: "col s8 m6",
-		},
-		{
-			id: "status",
-			label: "Status",
-			type: "select",
-			options: [
-				{ id: STATUS.FIRST_DRAFT, label: "First draft" },
-				{ id: STATUS.READY_FOR_REVIEW, label: "Ready for review" },
-				{ id: STATUS.UNDER_REVIEW, label: "Under review" },
-				{ id: STATUS.REVIEWED, label: "Reviewed" },
-				{ id: STATUS.FINISHED, label: "Finished" },
-			],
-			className: "col s12 m2",
-		},
-		{
-			id: "category",
-			label: "Category",
-			type: "select",
-			multiple: true,
-			options: [
-				{ id: TECHNOLOGY_CATEGORY.HARDWARE, label: "Hardware" },
-				{ id: TECHNOLOGY_CATEGORY.BIO_ENHANCEMENT, label: "Bio-enhancement" },
-				{
-					id: TECHNOLOGY_CATEGORY.PHARMACOLOGICAL_SUBSTANCES_SUPPLEMENTS_AND_NUTRITION,
-					label: "Pharmacological substances, supplements and nutrition",
-				},
-				{ id: TECHNOLOGY_CATEGORY.TRAINING, label: "Training" },
-				{ id: TECHNOLOGY_CATEGORY.SELF_REGULATION, label: "Self-regulation" },
-				{ id: TECHNOLOGY_CATEGORY.NUTRITION, label: "Nutrition" },
-				{ id: TECHNOLOGY_CATEGORY.OTHER, label: "Other" },
-			],
-			className: "col s4",
-		},
-		{
-			id: "owner",
-			label: "Owner",
-			type: "select",
-			options: users.map((u) => ({ id: u.id, label: u.name })),
-			className: "col s4 m3",
-		},
-		{
-			id: "reviewer",
-			label: "Reviewer",
-			type: "select",
-			multiple: true,
-			options: users.map((u) => ({ id: u.id, label: u.name })),
-			className: "col s8 m9",
-		},
-		{
-			id: "application",
-			label: "Specific application",
-			type: "textarea",
-			className: "col s12",
-		},
-		{
-			id: "hpeClassification",
-			label: "HPE classification",
-			type: "select",
-			className: "col s6 m4",
-			options: [
-				{ id: HPE_CLASSIFICATION.OPTIMIZATION, label: "Optimization" },
-				{ id: HPE_CLASSIFICATION.ENHANCEMENT, label: "Enhancement" },
-				{ id: HPE_CLASSIFICATION.DEGRADATION, label: "Degradation" },
-			],
-		},
-		{
-			id: "mainCap",
-			label: "Main capability",
-			type: "select",
-			className: "col s6 m4",
-			options: [
-				{ id: MAIN_CAPABILITY.COGNITION, label: "Cognition" },
-				{ id: MAIN_CAPABILITY.PHYSICAL, label: "Physical" },
-				{ id: MAIN_CAPABILITY.MENTAL, label: "Mental" },
-				{ id: MAIN_CAPABILITY.SOCIAL, label: "Social" },
-				{ id: MAIN_CAPABILITY.PHYSIOLOGICAL, label: "Physiological" },
-				{ id: MAIN_CAPABILITY.PERSONALITY, label: "Personality" },
-			],
-		},
-		{
-			id: "specificCap",
-			label: "Specific capability",
-			type: "tags",
-			className: "col s6 m4",
-		},
-		{
-			id: "similar",
-			label: "Similar technologies",
-			type: "select",
-			multiple: true,
-			options: technologyOptions,
-			className: "col s6 m4",
-		},
-		{
-			id: "invasive",
-			label: "Invasiveness",
-			type: "select",
-			className: "col s6 m4",
-			options: [
-				{ id: INVASIVENESS_OBTRUSIVENESS.LOW, label: "Low" },
-				{ id: INVASIVENESS_OBTRUSIVENESS.MEDIUM, label: "Medium" },
-				{ id: INVASIVENESS_OBTRUSIVENESS.HIGH, label: "High" },
-			],
-		},
-		{
-			id: "booster",
-			label: "Can be applied as booster?",
-			type: "checkbox",
-			className: "col s6 m4",
-			// options: [
-			// 	{ id: YES_NO.YES, label: "Yes" },
-			// 	{ id: YES_NO.NO, label: "No" },
-			// ],
-		},
-		{
-			id: "mechanism",
-			label: "Mechanism",
-			type: "textarea",
-			className: "col s12",
-		},
-		{
-			id: "effectDuration",
-			label: "Effect duration",
-			type: "text",
-			className: "col s6 m4",
-		},
-		{
-			id: "incubation",
-			label: "Effect incubation",
-			type: "text",
-			className: "col s6 m4",
-		},
-		{
-			id: "maturity",
-			label: "Maturity",
-			type: "select",
-			className: "col s6 m4",
-			options: [
-				{ id: MATURITY.LOW, label: "Low" },
-				{ id: MATURITY.MEDIUM, label: "Medium" },
-				{ id: MATURITY.HIGH, label: "High" },
-			],
-		},
-		{
-			id: "diff",
-			label: "Individual differences",
-			type: "textarea",
-			className: "col s12 m6",
-		},
-		{
-			id: "practical",
-			label: "Practical execution",
-			type: "textarea",
-			className: "col s12 m6",
-		},
-		{
-			id: "sideEffects",
-			label: "Side effects",
-			type: "textarea",
-			className: "col s12 m6",
-		},
-		{
-			id: "ethical",
-			label: "Ethical considerations",
-			type: "textarea",
-			className: "col s12 m6",
-		},
-		{
-			id: "examples",
-			label: "Examples of the intervention being used in practice",
-			type: "textarea",
-			className: "col s12",
-		},
-		{
-			id: "litID",
-			label: "Literature",
-			type: "select",
-			multiple: true,
-			className: "col s12",
-			options: literatureOptions,
-		},
-		{
-			id: "evidenceDir",
-			label: "Evidence direction",
-			type: "select",
-			className: "col s12 m4",
-			options: [
-				{
-					id: EVIDENCE_DIRECTION.GENERALLY_IN_FAVOR,
-					label: "Generally in favor",
-				},
-				{ id: EVIDENCE_DIRECTION.GENERALLY_AGAINST, label: "Generally against" },
-				{ id: EVIDENCE_DIRECTION.UNDECIDED, label: "Undecided" },
-			],
-		},
-		{
-			id: "evidenceScore",
-			label: "Evidence score",
-			type: "radio",
-			checkboxClass: "col s4",
-			className: "col s12 m4",
-			options: [
-				{ id: EVIDENCE_LEVEL.A, label: "A" },
-				{ id: EVIDENCE_LEVEL.B, label: "B" },
-				{ id: EVIDENCE_LEVEL.C, label: "C" },
-			],
-		},
-		{
-			id: "availability",
-			label: "Availability",
-			type: "select",
-			className: "col s12 m4",
-			options: [
-				{
-					id: AVAILABILITY.YES_WITHIN_THE_NETHERLANDS,
-					label: "Yes, within the netherlands",
-				},
-				{ id: AVAILABILITY.YES_WITHIN_THE_EU, label: "Yes, within the EU" },
-				{ id: AVAILABILITY.YES_OUTSIDE_THE_EU, label: "Yes, outside the EU" },
-				{ id: AVAILABILITY.NO, label: "No" },
-				{ id: AVAILABILITY.UNKNOWN, label: "Unknown" },
-			],
-		},
-		{ id: "url", label: "Link to image", type: "url", className: "col s12" },
-	] as UIForm;
-};
-
+import {
+	availabilityOptions,
+	evidenceDirOptions,
+	evidenceLevelOptions,
+	getOptionsLabel,
+	hpeClassificationOptions,
+	invasivenessOptions,
+	joinListWithAnd,
+	mainCapabilityOptions,
+	maturityOptions,
+	statusOptions,
+	technologyCategoryOptions,
+	technologyForm,
+} from "../utils";
+import { literatureTypeOptions } from "./settings-page";
 export const TechnologyPage: MeiosisComponent = () => {
 	let id = "";
 	let isEditting = false;
@@ -267,12 +28,15 @@ export const TechnologyPage: MeiosisComponent = () => {
 			{
 				attrs: {
 					state: { model, curTech = {} as Technology },
-					actions: { setPage, update },
+					actions: { setPage, setTechnology },
 				},
 			},
 		) => {
 			setPage(Dashboards.TECHNOLOGY);
 			id = m.route.param("id") || curTech.id || "";
+			isEditting =
+				(m.route.param("edit") as unknown as boolean) === true ? true : false;
+			console.log(isEditting);
 			const technologyOptions = model.technologies.filter((t) => t.id !== id).map(
 				(t) => ({ id: t.id, label: t.technology }),
 			);
@@ -283,19 +47,33 @@ export const TechnologyPage: MeiosisComponent = () => {
 			if (id === curTech.id) {
 				return;
 			}
-			const found = model.technologies.filter((t) => t.id === id).shift();
+			const found = model.technologies.filter((t) => t.id === id).shift() || model.technologies[0];
 			if (found) {
-				update({ curTech: found });
+				setTechnology(found);
 			}
 		},
 		view: (
 			{
 				attrs: {
 					state: { curTech = {} as Technology, model = defaultModel },
-					actions: { saveModel },
+					actions: { saveModel, changePage },
 				},
 			},
 		) => {
+			const { users, literature } = model;
+			const ownerId = curTech.owner;
+			const owner = users.filter((u) => u.id === ownerId).shift();
+			const reviewers = curTech.reviewer && users.filter(
+				(u) => curTech.reviewer.indexOf(u.id) >= 0,
+			);
+			const usedLiterature =
+				curTech.litID &&
+				curTech.litID.length > 0 &&
+				literature.filter((l) => curTech.litID.indexOf(l.id) >= 0);
+			const mailtoLink = owner && `mailto:${owner.email}?subject=${curTech.technology.replace(
+				/ /g,
+				"%20",
+			)}`;
 			return [
 				m(
 					".row.technology-page",
@@ -314,6 +92,20 @@ export const TechnologyPage: MeiosisComponent = () => {
 										onclick: () => isEditting = !isEditting,
 									},
 								),
+								isEditting && m(
+									FlatButton,
+									{
+										className: "right",
+										label: "Delete",
+										iconName: "delete",
+										onclick: () => {
+											model.technologies =
+												model.technologies.filter((t) => t.id !== curTech.id);
+											saveModel(model);
+											changePage(Dashboards.TECHNOLOGIES);
+										},
+									},
+								),
 							),
 							m(
 								".row",
@@ -330,7 +122,317 @@ export const TechnologyPage: MeiosisComponent = () => {
 											saveModel(model);
 										},
 									},
-								) : m("h4", curTech.technology),
+								) : [
+									m(
+										".row",
+										[
+											m(
+												".col.s12.m6",
+												m(
+													".row.bottom-margin0",
+													[
+														m("h4", curTech.technology),
+														curTech.application && m(
+															"p",
+															[
+																m("span.bold", "Application: "),
+																curTech.application,
+															],
+														),
+														curTech.category && m(
+															"p",
+															[
+																m("span.bold", "Category: "),
+																joinListWithAnd(
+																	curTech.category.map(
+																		(c) =>
+																			getOptionsLabel(
+																				technologyCategoryOptions,
+																				c,
+																			),
+																	),
+																) + ".",
+															],
+														),
+														curTech.hpeClassification && m(
+															"p",
+															[
+																m("span.bold", "HPE classification: "),
+																getOptionsLabel(
+																	hpeClassificationOptions,
+																	curTech.hpeClassification,
+																) + ".",
+															],
+														),
+														curTech.mainCap && m(
+															"p",
+															[
+																m("span.bold", "Main capability: "),
+																getOptionsLabel(
+																	mainCapabilityOptions,
+																	curTech.mainCap,
+																) + ".",
+															],
+														),
+														curTech.specificCap && m(
+															"p",
+															[
+																m("span.bold", "Specific capability: "),
+																joinListWithAnd(curTech.specificCap) + ".",
+															],
+														),
+														curTech.invasive && m(
+															"p",
+															[
+																m("span.bold", "Invasive: "),
+																getOptionsLabel(
+																	invasivenessOptions,
+																	curTech.invasive,
+																) + ".",
+															],
+														),
+														curTech.maturity && m(
+															"p",
+															[
+																m("span.bold", "Maturity: "),
+																getOptionsLabel(
+																	maturityOptions,
+																	curTech.maturity,
+																) + ".",
+															],
+														),
+														typeof curTech.booster !== "undefined" && m(
+															"p",
+															[
+																m("span.bold", "Can be used as booster: "),
+																`${curTech.booster ? "Yes" : "No"}.`,
+															],
+														),
+													],
+												),
+											),
+											curTech.url && m(
+												".col.s6.m6",
+												m(
+													"img.responsive-img",
+													{ src: curTech.url, alt: curTech.technology },
+												),
+											),
+											m(
+												".col.s12",
+												m(
+													".row.bottom-margin0",
+													[
+														curTech.mechanism && m(
+															"p",
+															[m("span.bold", "Mechanism: "), curTech.mechanism],
+														),
+														curTech.sideEffects && m(
+															"p",
+															[
+																m("span.bold", "Side-effects: "),
+																curTech.sideEffects,
+															],
+														),
+														curTech.diff && m(
+															"p",
+															[
+																m("span.bold", "Individual differences: "),
+																curTech.diff,
+															],
+														),
+														curTech.ethical && m(
+															"p",
+															[
+																m("span.bold", "Ethical considerations: "),
+																curTech.ethical,
+															],
+														),
+														curTech.examples && m(
+															"p",
+															[m("span.bold", "Examples: "), curTech.examples],
+														),
+													],
+												),
+											),
+											m(
+												".col.s6",
+												m(
+													".row",
+													[
+														curTech.evidenceDir && m(
+															"p",
+															[
+																m("span.bold", "Evidence direction: "),
+																getOptionsLabel(
+																	evidenceDirOptions,
+																	curTech.evidenceDir,
+																) + ".",
+															],
+														),
+														curTech.evidenceScore && m(
+															"p",
+															[
+																m("span.bold", "Evidence score: "),
+																getOptionsLabel(
+																	evidenceLevelOptions,
+																	curTech.evidenceScore,
+																) + ".",
+															],
+														),
+														curTech.availability && m(
+															"p",
+															[
+																m("span.bold", "Availability: "),
+																getOptionsLabel(
+																	availabilityOptions,
+																	curTech.availability,
+																) + ".",
+															],
+														),
+													],
+												),
+											),
+											owner && m(
+												".col.s6",
+												m(
+													".card",
+													[
+														m(
+															".card-image.waves-effect.waves-block.waves-light",
+															[
+																m(
+																	"a",
+																	owner &&
+																		owner.url &&
+																		m(
+																			"img.activator",
+																			{ src: owner.url, alt: owner.name },
+																		),
+																	m(
+																		"span.card-title.black-text.bold",
+																		owner.name,
+																	),
+																),
+															],
+														),
+														m(
+															".card-content",
+															m(
+																"p",
+																m(
+																	"span.card-title.activator",
+																	"For more information: ",
+																	m("i.material-icons.right", "more_vert"),
+																),
+																m(
+																	"ul",
+																	[
+																		m(
+																			"li",
+																			[
+																				m(
+																					Icon,
+																					{
+																						iconName: "phone",
+																						className: "tiny",
+																					},
+																				),
+																				m(
+																					"a",
+																					{ href: `call:${owner.phone}` },
+																					" " + owner.phone,
+																				),
+																			],
+																		),
+																		m(
+																			"li",
+																			[
+																				m(
+																					Icon,
+																					{
+																						iconName: "email",
+																						className: "tiny",
+																					},
+																				),
+																				m(
+																					"a",
+																					{ href: mailtoLink },
+																					" " + owner.email,
+																				),
+																			],
+																		),
+																	],
+																),
+															),
+														),
+														m(
+															".card-action",
+															m("a", { href: mailtoLink }, "Email"),
+														),
+														m(
+															".card-reveal",
+															[
+																m(
+																	"span.card-title.bold",
+																	`Owner: ${owner.name}`,
+																	m(
+																		Icon,
+																		{ iconName: "close", className: "right" },
+																	),
+																),
+																reviewers.length > 0 && m(
+																	"p",
+																	m(
+																		"span",
+																		`Reviewer${reviewers.length > 1 ? "s" : ""}: `,
+																		joinListWithAnd(
+																			reviewers.map((r) => r.name),
+																		) + ".",
+																	),
+																),
+																m(
+																	"p",
+																	[
+																		m("span.bold", "Status: "),
+																		getOptionsLabel(
+																			statusOptions,
+																			curTech.status,
+																		) + ".",
+																	],
+																),
+															],
+														),
+													],
+												),
+											),
+											usedLiterature && m(
+												".col.s12",
+												[
+													m("h5", "References"),
+													m(
+														"ol.browser-default",
+														usedLiterature.map(
+															(l) =>
+																m(
+																	"li",
+																	m(
+																		"a",
+																		{ href: l.doi, target: "_blank" },
+																		m("i", `"${l.title}"`),
+																		`, [${getOptionsLabel(
+																			literatureTypeOptions,
+																			l.type,
+																		)}].`,
+																	),
+																),
+														),
+													),
+												],
+											),
+										],
+									),
+								],
 							),
 						],
 					),

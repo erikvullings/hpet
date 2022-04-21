@@ -109,7 +109,7 @@ export enum YES_NO {
 	NO,
 }
 
-export enum INVASIVENESS_OBTRUSIVENESS { LOW = 1, MEDIUM, HIGH }
+export enum INVASIVENESS_OBTRUSIVENESS { NO = 1, LOW, MEDIUM, HIGH }
 
 export enum EFFECT_DIRECTION { NEGATIVE = 1, POSITIVE }
 
@@ -159,13 +159,13 @@ export type Literature = {
 
 export type Technology = {
 	id: ID,
-	owner: User,
-	reviewer: User[],
+	owner: ID,
+	reviewer: ID[],
 	status: STATUS,
 	technology: string,
 	/** Specific application */
 	application: string,
-	category: TECHNOLOGY_CATEGORY,
+	category: TECHNOLOGY_CATEGORY[],
 	hpeClassification: HPE_CLASSIFICATION,
 	/** Similar technologies */
 	similar: ID[],
@@ -200,4 +200,10 @@ export type Technology = {
 	url: string,
 };
 
-export type User = { id: ID, name: string, phone?: string, email?: string };
+export type User = {
+	id: ID,
+	name: string,
+	phone?: string,
+	email?: string,
+	url?: string,
+};
