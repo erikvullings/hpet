@@ -2,7 +2,7 @@ import m from "mithril";
 import { FlatButton, Icon } from "mithril-materialized";
 import { UIForm, LayoutForm } from "mithril-ui-form";
 import { Dashboards, defaultModel, Technology } from "../models";
-import { MeiosisComponent } from "../services";
+import { MeiosisComponent, routingSvc } from "../services";
 import {
 	availabilityOptions,
 	evidenceDirOptions,
@@ -60,7 +60,7 @@ export const TechnologyPage: MeiosisComponent = () => {
 				},
 			},
 		) => {
-			const { users, literature } = model;
+			const { users, literature, technologies } = model;
 			const ownerId = curTech.owner;
 			const owner = users.filter((u) => u.id === ownerId).shift();
 			const reviewers = curTech.reviewer && users.filter(
@@ -74,6 +74,10 @@ export const TechnologyPage: MeiosisComponent = () => {
 				/ /g,
 				"%20",
 			)}`;
+			const similarTech =
+				curTech.similar &&
+				curTech.similar.length > 0 &&
+				technologies.filter((t) => curTech.similar.indexOf(t.id) >= 0);
 			return [
 				m(
 					".row.technology-page",
@@ -87,7 +91,7 @@ export const TechnologyPage: MeiosisComponent = () => {
 									FlatButton,
 									{
 										className: "right",
-										label: "Edit",
+										label: isEditting ? "Stop editting" : "Edit",
 										iconName: "edit",
 										onclick: () => isEditting = !isEditting,
 									},
@@ -251,6 +255,30 @@ export const TechnologyPage: MeiosisComponent = () => {
 														curTech.examples && m(
 															"p",
 															[m("span.bold", "Examples: "), curTech.examples],
+														),
+														similarTech && m(
+															"p",
+															m(
+																"span.bold",
+																`Similar technolog${
+																	similarTech.length > 1 ? "ies" : "y"
+																}: `,
+															),
+															similarTech.map(
+																(s, i) =>
+																	m(
+																		"a",
+																		{
+																			href: routingSvc.href(
+																				Dashboards.TECHNOLOGY,
+																				`?id=${s.id}`,
+																			),
+																		},
+																		s.technology + (
+																			i < (similarTech.length - 1) ? ", " : "."
+																		),
+																	),
+															),
 														),
 													],
 												),

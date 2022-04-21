@@ -49,11 +49,11 @@ export const TechnologyOverviewPage: MeiosisComponent = () => {
 							m(
 								".row",
 								m(
-									".col.s12.m4",
+									".col.s6.m4",
 									m(
 										TextInputWithClear,
 										{
-											label: "Search",
+											label: "Filter",
 											iconName: "filter_list",
 											className: "bottom-margin0",
 											oninput: (s) => {
@@ -64,7 +64,7 @@ export const TechnologyOverviewPage: MeiosisComponent = () => {
 									),
 								),
 								m(
-									".col.s12.m4",
+									".col.s6.m4",
 									m(
 										Select,
 										{
@@ -75,21 +75,23 @@ export const TechnologyOverviewPage: MeiosisComponent = () => {
 									),
 								),
 								m(
-									FlatButton,
-									{
-										className: "right",
-										label: "Add new technology",
-										iconName: "add",
-										onclick: () => {
-											const newTech = { id: uniqueId() } as Technology;
-											model.technologies.push(newTech);
-											saveModel(model);
-											changePage(
-												Dashboards.TECHNOLOGY,
-												{ id: newTech.id, edit: "true" },
-											);
+									".col.s12.m4",
+									m(
+										FlatButton,
+										{
+											label: "Add technology",
+											iconName: "add",
+											onclick: () => {
+												const newTech = { id: uniqueId() } as Technology;
+												model.technologies.push(newTech);
+												saveModel(model);
+												changePage(
+													Dashboards.TECHNOLOGY,
+													{ id: newTech.id, edit: "true" },
+												);
+											},
 										},
-									},
+									),
 								),
 							),
 						),
