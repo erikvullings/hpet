@@ -16334,21 +16334,20 @@ var TechnologyOverviewPage = function () {
             });
             return [
                 (0, mithril_1.default)(".row.technology-overview-page", { style: "height: 95vh" }, [
-                    (0, mithril_1.default)(".col.s12", (0, mithril_1.default)(".row", (0, mithril_1.default)(".col.s12.m4", (0, mithril_1.default)(ui_1.TextInputWithClear, {
-                        label: "Search",
+                    (0, mithril_1.default)(".col.s12", (0, mithril_1.default)(".row", (0, mithril_1.default)(".col.s6.m4", (0, mithril_1.default)(ui_1.TextInputWithClear, {
+                        label: "Filter",
                         iconName: "filter_list",
                         className: "bottom-margin0",
                         oninput: function (s) {
                             searchFilter = s || "";
                             mithril_1.default.redraw();
                         },
-                    })), (0, mithril_1.default)(".col.s12.m4", (0, mithril_1.default)(mithril_materialized_1.Select, {
+                    })), (0, mithril_1.default)(".col.s6.m4", (0, mithril_1.default)(mithril_materialized_1.Select, {
                         label: "Capability",
                         options: __spreadArray([{ id: 0, label: "-" }], utils_1.mainCapabilityOptions, true),
                         onchange: function (c) { return mainCapFilter = +c; },
-                    })), (0, mithril_1.default)(mithril_materialized_1.FlatButton, {
-                        className: "right",
-                        label: "Add new technology",
+                    })), (0, mithril_1.default)(".col.s12.m4", (0, mithril_1.default)(mithril_materialized_1.FlatButton, {
+                        label: "Add technology",
                         iconName: "add",
                         onclick: function () {
                             var newTech = { id: (0, mithril_materialized_1.uniqueId)() };
@@ -16356,7 +16355,7 @@ var TechnologyOverviewPage = function () {
                             saveModel(model);
                             changePage(models_1.Dashboards.TECHNOLOGY, { id: newTech.id, edit: "true" });
                         },
-                    }))),
+                    })))),
                     filteredTechnologies.map(function (t) {
                         return (0, mithril_1.default)(".col.s12.m6.l4.xl3", (0, mithril_1.default)(".card.medium", [
                             (0, mithril_1.default)(".card-image", [
@@ -16396,6 +16395,7 @@ var mithril_1 = __importDefault(__webpack_require__(1022));
 var mithril_materialized_1 = __webpack_require__(1110);
 var mithril_ui_form_1 = __webpack_require__(2785);
 var models_1 = __webpack_require__(6454);
+var services_1 = __webpack_require__(2951);
 var utils_1 = __webpack_require__(6256);
 var settings_page_1 = __webpack_require__(4511);
 var TechnologyPage = function () {
@@ -16423,7 +16423,7 @@ var TechnologyPage = function () {
         },
         view: function (_a) {
             var _b = _a.attrs, _c = _b.state, _d = _c.curTech, curTech = _d === void 0 ? {} : _d, _e = _c.model, model = _e === void 0 ? models_1.defaultModel : _e, _f = _b.actions, saveModel = _f.saveModel, changePage = _f.changePage;
-            var users = model.users, literature = model.literature;
+            var users = model.users, literature = model.literature, technologies = model.technologies;
             var ownerId = curTech.owner;
             var owner = users.filter(function (u) { return u.id === ownerId; }).shift();
             var reviewers = curTech.reviewer && users.filter(function (u) { return curTech.reviewer.indexOf(u.id) >= 0; });
@@ -16431,11 +16431,14 @@ var TechnologyPage = function () {
                 curTech.litID.length > 0 &&
                 literature.filter(function (l) { return curTech.litID.indexOf(l.id) >= 0; });
             var mailtoLink = owner && "mailto:".concat(owner.email, "?subject=").concat(curTech.technology.replace(/ /g, "%20"));
+            var similarTech = curTech.similar &&
+                curTech.similar.length > 0 &&
+                technologies.filter(function (t) { return curTech.similar.indexOf(t.id) >= 0; });
             return [
                 (0, mithril_1.default)(".row.technology-page", { style: "height: 95vh" }, (0, mithril_1.default)(".col.s12", [
                     (0, mithril_1.default)(".row", (0, mithril_1.default)(mithril_materialized_1.FlatButton, {
                         className: "right",
-                        label: "Edit",
+                        label: isEditting ? "Stop editting" : "Edit",
                         iconName: "edit",
                         onclick: function () { return isEditting = !isEditting; },
                     }), isEditting && (0, mithril_1.default)(mithril_materialized_1.FlatButton, {
@@ -16512,6 +16515,11 @@ var TechnologyPage = function () {
                                     curTech.ethical,
                                 ]),
                                 curTech.examples && (0, mithril_1.default)("p", [(0, mithril_1.default)("span.bold", "Examples: "), curTech.examples]),
+                                similarTech && (0, mithril_1.default)("p", (0, mithril_1.default)("span.bold", "Similar technolog".concat(similarTech.length > 1 ? "ies" : "y", ": ")), similarTech.map(function (s, i) {
+                                    return (0, mithril_1.default)("a", {
+                                        href: services_1.routingSvc.href(models_1.Dashboards.TECHNOLOGY, "?id=".concat(s.id)),
+                                    }, s.technology + (i < (similarTech.length - 1) ? ", " : "."));
+                                })),
                             ])),
                             (0, mithril_1.default)(".col.s6", (0, mithril_1.default)(".row", [
                                 curTech.evidenceDir && (0, mithril_1.default)("p", [
@@ -16991,6 +16999,7 @@ var appActions = function (_a) {
         },
         saveModel: function (model) {
             model.lastUpdate = Date.now();
+            model.version = model.version ? model.version++ : 1;
             localStorage.setItem(MODEL_KEY, JSON.stringify(model));
             update({ model: function () { return model; } });
         },
@@ -17420,25 +17429,25 @@ var technologyForm = function (users, technologyOptions, literatureOptions) {
             id: "diff",
             label: "Individual differences",
             type: "textarea",
-            className: "col s12 m6",
+            className: "col s12",
         },
         {
             id: "practical",
             label: "Practical execution",
             type: "textarea",
-            className: "col s12 m6",
+            className: "col s12",
         },
         {
             id: "sideEffects",
             label: "Side effects",
             type: "textarea",
-            className: "col s12 m6",
+            className: "col s12",
         },
         {
             id: "ethical",
             label: "Ethical considerations",
             type: "textarea",
-            className: "col s12 m6",
+            className: "col s12",
         },
         {
             id: "examples",
