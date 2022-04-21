@@ -36,6 +36,7 @@ export const appActions: (cell: MeiosisCell<State>) => Actions = ({ update }) =>
 		update({ page });
 	},
 	saveModel: (model) => {
+		model.lastUpdate = Date.now();
 		localStorage.setItem(MODEL_KEY, JSON.stringify(model));
 		update({ model: () => model });
 	},
