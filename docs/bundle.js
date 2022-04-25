@@ -15675,13 +15675,14 @@ var background_jpg_1 = __importDefault(__webpack_require__(2868));
 var services_1 = __webpack_require__(2951);
 var models_1 = __webpack_require__(6454);
 var utils_1 = __webpack_require__(6256);
+var mithril_ui_form_1 = __webpack_require__(2785);
 var HomePage = function () {
     var readerAvailable = window.File && window.FileReader && window.FileList && window.Blob;
     return {
         oninit: function (_a) {
             var _b = _a.attrs.actions, setPage = _b.setPage, saveModel = _b.saveModel, changePage = _b.changePage;
             setPage(models_1.Dashboards.HOME);
-            var uriModel = mithril_1.default.route.param("model");
+            var uriModel = mithril_1.default.route.param('model');
             if (!uriModel) {
                 return;
             }
@@ -15701,19 +15702,19 @@ var HomePage = function () {
         view: function (_a) {
             var _b = _a.attrs, _c = _b.state.model, model = _c === void 0 ? models_1.defaultModel : _c, saveModel = _b.actions.saveModel;
             return [
-                (0, mithril_1.default)("div", { style: "position: relative;" }, [
+                (0, mithril_1.default)('div', { style: 'position: relative;' }, [
                     // m(
                     // 	".overlay.center",
                     // 	{ style: "position: absolute; width: 100%" },
                     // 	[m("h3.bold", "Database for Human Enhancement Interventions")],
                     // ),
-                    (0, mithril_1.default)("img.responsive-img.center", { src: background_jpg_1.default }),
-                    (0, mithril_1.default)(".buttons.center", { style: "margin: 10px auto;" }, [
+                    (0, mithril_1.default)('img.responsive-img.center', { src: background_jpg_1.default }),
+                    (0, mithril_1.default)('.buttons.center', { style: 'margin: 10px auto;' }, [
                         (0, mithril_1.default)(mithril_materialized_1.Button, {
-                            iconName: "clear",
-                            className: "btn-large",
-                            label: "Clear",
-                            modalId: "clearAll",
+                            iconName: 'clear',
+                            className: 'btn-large',
+                            label: 'Clear',
+                            modalId: 'clearAll',
                         }),
                         // typeof model.version === "number" && m(
                         // 	Button,
@@ -15726,32 +15727,33 @@ var HomePage = function () {
                         // 		},
                         // 	},
                         // ),
-                        (0, mithril_1.default)("a#downloadAnchorElem", { style: "display:none" }),
+                        (0, mithril_1.default)('a#downloadAnchorElem', { style: 'display:none' }),
                         (0, mithril_1.default)(mithril_materialized_1.Button, {
-                            iconName: "download",
-                            className: "btn-large",
-                            label: "Download",
+                            iconName: 'download',
+                            className: 'btn-large',
+                            label: 'Download',
                             onclick: function () {
-                                var dlAnchorElem = document.getElementById("downloadAnchorElem");
+                                var dlAnchorElem = document.getElementById('downloadAnchorElem');
                                 if (!dlAnchorElem) {
                                     return;
                                 }
-                                var version = typeof model.version === "undefined" ? 1 : model.version++;
-                                var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(__assign(__assign({}, model), { version: version }), null, 2));
-                                dlAnchorElem.setAttribute("href", dataStr);
-                                dlAnchorElem.setAttribute("download", "".concat((0, utils_1.formatDate)(), "_v").concat(version, "_hpte_model.json"));
+                                var version = typeof model.version === 'undefined' ? 1 : model.version++;
+                                var dataStr = 'data:text/json;charset=utf-8,' +
+                                    encodeURIComponent(JSON.stringify(__assign(__assign({}, model), { version: version }), null, 2));
+                                dlAnchorElem.setAttribute('href', dataStr);
+                                dlAnchorElem.setAttribute('download', "".concat((0, utils_1.formatDate)(), "_v").concat((0, mithril_ui_form_1.padLeft)(version, 3), "_hpte_model.json"));
                                 dlAnchorElem.click();
                             },
                         }),
-                        (0, mithril_1.default)("input#selectFiles[type=file]", { style: "display:none" }),
-                        readerAvailable && (0, mithril_1.default)(mithril_materialized_1.Button, {
-                            iconName: "upload",
-                            className: "btn-large",
-                            label: "Upload",
-                            onclick: function () {
-                                var fileInput = document.getElementById("selectFiles");
-                                fileInput.onchange =
-                                    function () {
+                        (0, mithril_1.default)('input#selectFiles[type=file]', { style: 'display:none' }),
+                        readerAvailable &&
+                            (0, mithril_1.default)(mithril_materialized_1.Button, {
+                                iconName: 'upload',
+                                className: 'btn-large',
+                                label: 'Upload',
+                                onclick: function () {
+                                    var fileInput = document.getElementById('selectFiles');
+                                    fileInput.onchange = function () {
                                         if (!fileInput) {
                                             return;
                                         }
@@ -15760,49 +15762,48 @@ var HomePage = function () {
                                             return;
                                         }
                                         var reader = new FileReader();
-                                        reader.onload =
-                                            function (e) {
-                                                var result = e &&
-                                                    e.target &&
-                                                    e.target.result &&
-                                                    JSON.parse(e.target.result.toString());
-                                                result && result.version && saveModel(result);
-                                            };
+                                        reader.onload = function (e) {
+                                            var result = e &&
+                                                e.target &&
+                                                e.target.result &&
+                                                JSON.parse(e.target.result.toString());
+                                            result && result.version && saveModel(result);
+                                        };
                                         var data = files && files.item(0);
                                         data && reader.readAsText(data);
                                         services_1.routingSvc.switchTo(models_1.Dashboards.OVERVIEW);
                                     };
-                                fileInput.click();
-                            },
-                        }),
+                                    fileInput.click();
+                                },
+                            }),
                         (0, mithril_1.default)(mithril_materialized_1.Button, {
-                            iconName: "link",
-                            className: "btn-large",
-                            label: "Permalink",
+                            iconName: 'link',
+                            className: 'btn-large',
+                            label: 'Permalink',
                             onclick: function () {
-                                var permLink = document.createElement("input");
+                                var permLink = document.createElement('input');
                                 document.body.appendChild(permLink);
                                 if (!permLink) {
                                     return;
                                 }
                                 var compressed = lz_string_1.default.compressToEncodedURIComponent(JSON.stringify(model));
-                                var url = "".concat(window.location.href).concat(/\?/.test(window.location.href) ? "&" : "?", "model=").concat(compressed);
+                                var url = "".concat(window.location.href).concat(/\?/.test(window.location.href) ? '&' : '?', "model=").concat(compressed);
                                 permLink.value = url;
                                 permLink.select();
                                 permLink.setSelectionRange(0, 999999); // For mobile devices
                                 try {
-                                    var successful = document.execCommand("copy");
+                                    var successful = document.execCommand('copy');
                                     if (successful) {
                                         M.toast({
-                                            html: "Copied permanent link to clipboard.",
-                                            classes: "yellow black-text",
+                                            html: 'Copied permanent link to clipboard.',
+                                            classes: 'yellow black-text',
                                         });
                                     }
                                 }
                                 catch (err) {
                                     M.toast({
-                                        html: "Failed copying link to clipboard: " + err,
-                                        classes: "red",
+                                        html: 'Failed copying link to clipboard: ' + err,
+                                        classes: 'red',
                                     });
                                 }
                                 finally {
@@ -15811,39 +15812,39 @@ var HomePage = function () {
                             },
                         }),
                     ]),
-                    (0, mithril_1.default)(".section.white", (0, mithril_1.default)(".row.container.center", [
-                        (0, mithril_1.default)(".row", [
-                            (0, mithril_1.default)(".col.s12.m4", (0, mithril_1.default)(".icon-block", [
-                                (0, mithril_1.default)(".center", (0, mithril_1.default)(mithril_materialized_1.Icon, { iconName: "dashboard" })),
-                                (0, mithril_1.default)("h5.center", "Prepare"),
-                                (0, mithril_1.default)("p.light", "Create or select the technologies that are important for your mission."),
+                    (0, mithril_1.default)('.section.white', (0, mithril_1.default)('.row.container.center', [
+                        (0, mithril_1.default)('.row', [
+                            (0, mithril_1.default)('.col.s12.m4', (0, mithril_1.default)('.icon-block', [
+                                (0, mithril_1.default)('.center', (0, mithril_1.default)(mithril_materialized_1.Icon, { iconName: 'dashboard' })),
+                                (0, mithril_1.default)('h5.center', 'Prepare'),
+                                (0, mithril_1.default)('p.light', 'Create or select the technologies that are important for your mission.'),
                             ])),
-                            (0, mithril_1.default)(".col.s12.m4", (0, mithril_1.default)(".icon-block", [
-                                (0, mithril_1.default)(".center", (0, mithril_1.default)(mithril_materialized_1.Icon, { iconName: "flash_on" })),
-                                (0, mithril_1.default)("h5.center", "Assess"),
-                                (0, mithril_1.default)("p.light", "Determine for each technologies how important it is, and your current performance, so you can prioritise and focus on the ones you really need."),
+                            (0, mithril_1.default)('.col.s12.m4', (0, mithril_1.default)('.icon-block', [
+                                (0, mithril_1.default)('.center', (0, mithril_1.default)(mithril_materialized_1.Icon, { iconName: 'flash_on' })),
+                                (0, mithril_1.default)('h5.center', 'Assess'),
+                                (0, mithril_1.default)('p.light', "Determine for each technologies how important it is, and your current performance, so you can prioritise and focus on the ones you really need."),
                             ])),
-                            (0, mithril_1.default)(".col.s12.m4", (0, mithril_1.default)(".icon-block", [
-                                (0, mithril_1.default)(".center", (0, mithril_1.default)(mithril_materialized_1.Icon, { iconName: "group" })),
-                                (0, mithril_1.default)("h5.center", "Compare"),
-                                (0, mithril_1.default)("p.light", "Compare and select technologies so you can choose the one that fits best with your needs."),
+                            (0, mithril_1.default)('.col.s12.m4', (0, mithril_1.default)('.icon-block', [
+                                (0, mithril_1.default)('.center', (0, mithril_1.default)(mithril_materialized_1.Icon, { iconName: 'group' })),
+                                (0, mithril_1.default)('h5.center', 'Compare'),
+                                (0, mithril_1.default)('p.light', 'Compare and select technologies so you can choose the one that fits best with your needs.'),
                             ])),
                         ]),
                     ])),
                     (0, mithril_1.default)(mithril_materialized_1.ModalPanel, {
-                        id: "clearAll",
-                        title: "Do you really want to delete everything?",
-                        description: "Are you sure that you want to delete your model?",
+                        id: 'clearAll',
+                        title: 'Do you really want to delete everything?',
+                        description: 'Are you sure that you want to delete your model?',
                         buttons: [
                             {
-                                label: "Yes",
-                                iconName: "delete",
+                                label: 'Yes',
+                                iconName: 'delete',
                                 onclick: function () {
                                     saveModel(models_1.defaultModel);
                                     services_1.routingSvc.switchTo(models_1.Dashboards.OVERVIEW);
                                 },
                             },
-                            { label: "No", iconName: "cancel" },
+                            { label: 'No', iconName: 'cancel' },
                         ],
                     }),
                 ]),
@@ -15975,79 +15976,97 @@ var mithril_materialized_1 = __webpack_require__(1110);
 var mithril_ui_form_1 = __webpack_require__(2785);
 var models_1 = __webpack_require__(6454);
 exports.literatureTypeOptions = [
-    { id: models_1.LITERATURE_TYPE.CASE_STUDY, label: "Case study" },
-    { id: models_1.LITERATURE_TYPE.THESIS, label: "Thesis" },
-    { id: models_1.LITERATURE_TYPE.REPORT, label: "Report" },
-    { id: models_1.LITERATURE_TYPE.TECHNICAL_REPORT, label: "Technical report" },
-    { id: models_1.LITERATURE_TYPE.PRODUCER_WEBSITE, label: "Producer website" },
-    { id: models_1.LITERATURE_TYPE.WHITE_PAPER, label: "White paper" },
-    { id: models_1.LITERATURE_TYPE.CONFERENCE_PROCEEDING, label: "Conference proceedings" },
-    { id: models_1.LITERATURE_TYPE.PATENT, label: "Patent" },
-    { id: models_1.LITERATURE_TYPE.POPULAR_MEDIA, label: "Popular media" },
-    { id: models_1.LITERATURE_TYPE.CONSENSUS_STATEMENT, label: "Consensus statement" },
-    { id: models_1.LITERATURE_TYPE.EMPERICAL_PR, label: "Emperical (Peer Reviewed)" },
-    { id: models_1.LITERATURE_TYPE.REVIEW_PR, label: "Review (Peer Reviewed)" },
+    { id: models_1.LITERATURE_TYPE.CASE_STUDY, label: 'Case study' },
+    { id: models_1.LITERATURE_TYPE.THESIS, label: 'Thesis' },
+    { id: models_1.LITERATURE_TYPE.REPORT, label: 'Report' },
+    { id: models_1.LITERATURE_TYPE.TECHNICAL_REPORT, label: 'Technical report' },
+    { id: models_1.LITERATURE_TYPE.PRODUCER_WEBSITE, label: 'Producer website' },
+    { id: models_1.LITERATURE_TYPE.WHITE_PAPER, label: 'White paper' },
+    { id: models_1.LITERATURE_TYPE.CONFERENCE_PROCEEDING, label: 'Conference proceedings' },
+    { id: models_1.LITERATURE_TYPE.PATENT, label: 'Patent' },
+    { id: models_1.LITERATURE_TYPE.POPULAR_MEDIA, label: 'Popular media' },
+    { id: models_1.LITERATURE_TYPE.CONSENSUS_STATEMENT, label: 'Consensus statement' },
+    { id: models_1.LITERATURE_TYPE.EMPERICAL_PR, label: 'Emperical (Peer Reviewed)' },
+    { id: models_1.LITERATURE_TYPE.REVIEW_PR, label: 'Review (Peer Reviewed)' },
     {
         id: models_1.LITERATURE_TYPE.SYSTEMATIC_REVIEW_PR,
-        label: "Systematic review (Peer Reviewed)",
+        label: 'Systematic review (Peer Reviewed)',
     },
     {
         id: models_1.LITERATURE_TYPE.META_ANALYSIS_PR,
-        label: "Meta analysis (Peer Reviewed)",
+        label: 'Meta analysis (Peer Reviewed)',
     },
 ];
 var literatureForm = [
-    { id: "id", type: "none", autogenerate: "id" },
-    { id: "doi", label: "DOI", required: true, type: "text", className: "col s3" },
+    { id: 'id', type: 'text', autogenerate: 'id', className: 'col s4' },
+    { id: 'doi', label: 'DOI', required: true, type: 'text', className: 'col s4' },
     {
-        id: "title",
-        label: "Title",
+        id: 'type',
+        label: 'Type',
         required: true,
-        type: "text",
-        className: "col s5",
+        type: 'select',
+        options: exports.literatureTypeOptions,
+        className: 'col s4',
     },
     {
-        id: "type",
-        label: "Type",
+        id: 'title',
+        label: 'Title',
         required: true,
-        type: "select",
-        options: exports.literatureTypeOptions,
-        className: "col s4",
+        type: 'text',
+        className: 'col s12',
+    },
+];
+var measurementForm = [
+    { id: 'id', type: 'text', autogenerate: 'id', className: 'col s3' },
+    { id: 'url', label: 'URL', type: 'url', className: 'col s3' },
+    {
+        id: 'title',
+        label: 'Title',
+        required: true,
+        type: 'text',
+        className: 'col s4',
+    },
+    {
+        id: 'desc',
+        label: 'Description',
+        required: true,
+        type: 'textarea',
+        className: 'col s12',
     },
 ];
 var userForm = [
-    { id: "id", type: "none", autogenerate: "id" },
+    { id: 'id', type: 'none', autogenerate: 'id' },
     {
-        id: "name",
-        label: "Name",
-        icon: "title",
-        type: "text",
+        id: 'name',
+        label: 'Name',
+        icon: 'title',
+        type: 'text',
         required: true,
-        className: "col s4",
+        className: 'col s4',
     },
     {
-        id: "email",
-        label: "Email",
-        icon: "email",
-        type: "email",
+        id: 'email',
+        label: 'Email',
+        icon: 'email',
+        type: 'email',
         required: true,
-        className: "col s4",
+        className: 'col s4',
     },
     {
-        id: "phone",
-        label: "Phone",
-        icon: "phone",
-        type: "text",
+        id: 'phone',
+        label: 'Phone',
+        icon: 'phone',
+        type: 'text',
         required: true,
-        className: "col s4",
+        className: 'col s4',
     },
     {
-        id: "url",
-        label: "Image link",
-        icon: "link",
-        type: "url",
+        id: 'url',
+        label: 'Image link',
+        icon: 'link',
+        type: 'url',
         required: false,
-        className: "col s12",
+        className: 'col s12',
     },
 ];
 var SettingsPage = function () {
@@ -16057,6 +16076,9 @@ var SettingsPage = function () {
     var newUser = {};
     var addUser = false;
     var canSaveUser = false;
+    var newMeasurement = {};
+    var addMeasurement = false;
+    var canSaveMeasurement = false;
     return {
         oninit: function (_a) {
             var setPage = _a.attrs.actions.setPage;
@@ -16064,52 +16086,51 @@ var SettingsPage = function () {
         },
         view: function (_a) {
             var _b = _a.attrs, _c = _b.state.model, model = _c === void 0 ? models_1.defaultModel : _c, saveModel = _b.actions.saveModel;
-            var literature = model.literature, users = model.users;
+            var literature = model.literature, users = model.users, _d = model.measurements, measurements = _d === void 0 ? [] : _d;
             return [
-                (0, mithril_1.default)(".row.settings", [
+                (0, mithril_1.default)('.row.settings', [
                     (0, mithril_1.default)(mithril_materialized_1.Tabs, {
-                        tabWidth: "auto",
+                        tabWidth: 'auto',
                         tabs: [
                             {
-                                title: "Literature",
-                                vnode: (0, mithril_1.default)(".row.literature", [
-                                    (0, mithril_1.default)("h4", "Selected literature"),
+                                title: 'Literature',
+                                vnode: (0, mithril_1.default)('.row.literature', [
                                     (0, mithril_1.default)(mithril_materialized_1.Collapsible, {
                                         items: literature.map(function (lit) { return ({
                                             key: lit.id,
-                                            header: lit.title || "Empty",
-                                            body: (0, mithril_1.default)(".row", [
+                                            header: lit.title || 'Empty',
+                                            body: (0, mithril_1.default)('.row', [
                                                 (0, mithril_1.default)(mithril_ui_form_1.LayoutForm, {
                                                     form: literatureForm,
                                                     obj: lit,
                                                     onchange: function () { return saveModel(model); },
                                                 }),
                                                 (0, mithril_1.default)(mithril_materialized_1.FlatButton, {
-                                                    label: "Delete",
-                                                    iconName: "delete",
-                                                    className: "right",
+                                                    label: 'Delete',
+                                                    iconName: 'delete',
+                                                    className: 'right',
                                                     onclick: function () {
-                                                        model.literature =
-                                                            literature.filter(function (l) { return l.id !== lit.id; });
+                                                        model.literature = literature.filter(function (l) { return l.id !== lit.id; });
                                                         saveModel(model);
                                                     },
                                                 }),
-                                                (0, mithril_1.default)("a.waves-effect.waves-teal.btn-flat.right", { href: lit.doi, target: "_blank" }, (0, mithril_1.default)("i.material-icons left", "link"), "Open link"),
+                                                (0, mithril_1.default)('a.waves-effect.waves-teal.btn-flat.right', { href: lit.doi, target: '_blank' }, (0, mithril_1.default)('i.material-icons left', 'link'), 'Open link'),
                                             ]),
                                         }); }),
                                     }),
-                                    addLiterature && (0, mithril_1.default)(mithril_ui_form_1.LayoutForm, {
-                                        form: literatureForm,
-                                        obj: newLiterature,
-                                        onchange: function (isValid) {
-                                            canSaveLiterature = isValid;
-                                        },
-                                    }),
+                                    addLiterature &&
+                                        (0, mithril_1.default)(mithril_ui_form_1.LayoutForm, {
+                                            form: literatureForm,
+                                            obj: newLiterature,
+                                            onchange: function (isValid) {
+                                                canSaveLiterature = isValid;
+                                            },
+                                        }),
                                     (0, mithril_1.default)(mithril_materialized_1.FlatButton, {
-                                        label: addLiterature ? "Save" : "Add literature",
+                                        label: addLiterature ? 'Save' : 'Add literature',
                                         disabled: addLiterature ? !canSaveLiterature : false,
-                                        iconName: addLiterature ? "save" : "add",
-                                        className: "right",
+                                        iconName: addLiterature ? 'save' : 'add',
+                                        className: 'right',
                                         onclick: function () {
                                             if (addLiterature && canSaveLiterature) {
                                                 model.literature.push(newLiterature);
@@ -16120,65 +16141,64 @@ var SettingsPage = function () {
                                             addLiterature = !addLiterature;
                                         },
                                     }),
-                                    addLiterature && (0, mithril_1.default)(mithril_materialized_1.FlatButton, {
-                                        label: "Cancel",
-                                        iconName: "cancel",
-                                        className: "right",
-                                        onclick: function () {
-                                            newLiterature = {};
-                                            canSaveLiterature = false;
-                                            addLiterature = false;
-                                        },
-                                    }),
+                                    addLiterature &&
+                                        (0, mithril_1.default)(mithril_materialized_1.FlatButton, {
+                                            label: 'Cancel',
+                                            iconName: 'cancel',
+                                            className: 'right',
+                                            onclick: function () {
+                                                newLiterature = {};
+                                                canSaveLiterature = false;
+                                                addLiterature = false;
+                                            },
+                                        }),
                                 ]),
                             },
                             {
-                                title: "Users",
-                                vnode: (0, mithril_1.default)(".row.User", [
-                                    (0, mithril_1.default)("h4", "Selected User"),
+                                title: 'Users',
+                                vnode: (0, mithril_1.default)('.row.users', [
                                     (0, mithril_1.default)(mithril_materialized_1.Collapsible, {
                                         items: users.map(function (user) { return ({
                                             key: user.id,
-                                            header: user.name || "Empty",
-                                            body: (0, mithril_1.default)(".row", [
+                                            header: user.name || 'Empty',
+                                            body: (0, mithril_1.default)('.row', [
                                                 (0, mithril_1.default)(mithril_ui_form_1.LayoutForm, {
                                                     form: userForm,
                                                     obj: user,
                                                     onchange: function () { return saveModel(model); },
                                                 }),
                                                 (0, mithril_1.default)(mithril_materialized_1.FlatButton, {
-                                                    label: "Delete",
-                                                    iconName: "delete",
-                                                    className: "right",
+                                                    label: 'Delete',
+                                                    iconName: 'delete',
+                                                    className: 'right',
                                                     onclick: function () {
-                                                        model.users =
-                                                            users.filter(function (u) { return u.id !== user.id; });
+                                                        model.users = users.filter(function (u) { return u.id !== user.id; });
                                                         saveModel(model);
                                                     },
                                                 }),
-                                                (0, mithril_1.default)("a.waves-effect.waves-teal.btn-flat.right", { href: "mailto:".concat(user.email) }, (0, mithril_1.default)("i.material-icons left", "email"), "Open email"),
+                                                (0, mithril_1.default)('a.waves-effect.waves-teal.btn-flat.right', { href: "mailto:".concat(user.email) }, (0, mithril_1.default)('i.material-icons left', 'email'), 'Open email'),
                                             ]),
                                         }); }),
                                     }),
-                                    addUser && (0, mithril_1.default)(mithril_ui_form_1.LayoutForm, {
-                                        form: userForm,
-                                        obj: newUser,
-                                        onchange: function (isValid) {
-                                            canSaveUser = isValid;
-                                        },
-                                    }),
+                                    addUser &&
+                                        (0, mithril_1.default)(mithril_ui_form_1.LayoutForm, {
+                                            form: userForm,
+                                            obj: newUser,
+                                            onchange: function (isValid) {
+                                                canSaveUser = isValid;
+                                            },
+                                        }),
                                     (0, mithril_1.default)(mithril_materialized_1.FlatButton, {
-                                        label: addUser ? "Save" : "Add User",
+                                        label: addUser ? 'Save' : 'Add User',
                                         disabled: addUser ? !canSaveUser : false,
-                                        iconName: addUser ? "save" : "add",
-                                        className: "right",
+                                        iconName: addUser ? 'save' : 'add',
+                                        className: 'right',
                                         onclick: function () {
                                             if (addUser && canSaveUser) {
                                                 model.users.push(newUser);
-                                                model.users =
-                                                    model.users.sort(function (a, b) {
-                                                        return a.name.split(" ").pop().localeCompare(b.name.split(" ").pop());
-                                                    });
+                                                model.users = model.users.sort(function (a, b) {
+                                                    return a.name.split(' ').pop().localeCompare(b.name.split(' ').pop());
+                                                });
                                                 saveModel(model);
                                                 newUser = {};
                                                 canSaveUser = false;
@@ -16186,16 +16206,83 @@ var SettingsPage = function () {
                                             addUser = !addUser;
                                         },
                                     }),
-                                    addLiterature && (0, mithril_1.default)(mithril_materialized_1.FlatButton, {
-                                        label: "Cancel",
-                                        iconName: "cancel",
-                                        className: "right",
+                                    addUser &&
+                                        (0, mithril_1.default)(mithril_materialized_1.FlatButton, {
+                                            label: 'Cancel',
+                                            iconName: 'cancel',
+                                            className: 'right',
+                                            onclick: function () {
+                                                newUser = {};
+                                                canSaveUser = false;
+                                                addUser = false;
+                                            },
+                                        }),
+                                ]),
+                            },
+                            {
+                                title: 'Measurements',
+                                vnode: (0, mithril_1.default)('.row.measurements', [
+                                    (0, mithril_1.default)(mithril_materialized_1.Collapsible, {
+                                        items: measurements.map(function (measurement) { return ({
+                                            key: measurement.id,
+                                            header: measurement.title || 'Empty',
+                                            body: (0, mithril_1.default)('.row', [
+                                                (0, mithril_1.default)(mithril_ui_form_1.LayoutForm, {
+                                                    form: measurementForm,
+                                                    obj: measurement,
+                                                    onchange: function () { return saveModel(model); },
+                                                }),
+                                                (0, mithril_1.default)(mithril_materialized_1.FlatButton, {
+                                                    label: 'Delete',
+                                                    iconName: 'delete',
+                                                    className: 'right',
+                                                    onclick: function () {
+                                                        model.measurements = measurements.filter(function (u) { return u.id !== measurement.id; });
+                                                        saveModel(model);
+                                                    },
+                                                }),
+                                                measurement.url &&
+                                                    (0, mithril_1.default)('a.waves-effect.waves-teal.btn-flat.right', { href: measurement.url, target: '_blank' }, (0, mithril_1.default)('i.material-icons left', 'link'), 'Open website'),
+                                            ]),
+                                        }); }),
+                                    }),
+                                    addMeasurement &&
+                                        (0, mithril_1.default)(mithril_ui_form_1.LayoutForm, {
+                                            form: measurementForm,
+                                            obj: newMeasurement,
+                                            onchange: function (isValid) {
+                                                canSaveMeasurement = isValid;
+                                            },
+                                        }),
+                                    (0, mithril_1.default)(mithril_materialized_1.FlatButton, {
+                                        label: addMeasurement ? 'Save' : 'Add Measurement',
+                                        disabled: addMeasurement ? !canSaveMeasurement : false,
+                                        iconName: addMeasurement ? 'save' : 'add',
+                                        className: 'right',
                                         onclick: function () {
-                                            newLiterature = {};
-                                            canSaveLiterature = false;
-                                            addLiterature = false;
+                                            if (addMeasurement && canSaveMeasurement) {
+                                                model.measurements.push(newMeasurement);
+                                                model.measurements = model.measurements.sort(function (a, b) {
+                                                    return a.title.split(' ').pop().localeCompare(b.title.split(' ').pop());
+                                                });
+                                                saveModel(model);
+                                                newMeasurement = {};
+                                                canSaveMeasurement = false;
+                                            }
+                                            addMeasurement = !addMeasurement;
                                         },
                                     }),
+                                    addMeasurement &&
+                                        (0, mithril_1.default)(mithril_materialized_1.FlatButton, {
+                                            label: 'Cancel',
+                                            iconName: 'cancel',
+                                            className: 'right',
+                                            onclick: function () {
+                                                newMeasurement = {};
+                                                canSaveMeasurement = false;
+                                                addMeasurement = false;
+                                            },
+                                        }),
                                 ]),
                             },
                         ],
@@ -16312,7 +16399,7 @@ var services_1 = __webpack_require__(2951);
 var utils_1 = __webpack_require__(6256);
 var ui_1 = __webpack_require__(3735);
 var TechnologyOverviewPage = function () {
-    var searchFilter = "";
+    var searchFilter = '';
     var mainCapFilter = 0;
     return {
         oninit: function (_a) {
@@ -16320,11 +16407,12 @@ var TechnologyOverviewPage = function () {
             return setPage(models_1.Dashboards.TECHNOLOGIES);
         },
         view: function (_a) {
-            var _b = _a.attrs, model = _b.state.model, _c = _b.actions, setTechnology = _c.setTechnology, saveModel = _c.saveModel, changePage = _c.changePage;
+            var _b = _a.attrs, _c = _b.state, model = _c.model, _d = _c.bookmarks, bookmarks = _d === void 0 ? [] : _d, _e = _b.actions, setTechnology = _e.setTechnology, saveModel = _e.saveModel, changePage = _e.changePage, bookmark = _e.bookmark;
             var technologies = model.technologies;
-            var searchRegex = searchFilter ? new RegExp(searchFilter, "i") : undefined;
+            var searchRegex = searchFilter ? new RegExp(searchFilter, 'i') : undefined;
             var filteredTechnologies = technologies.filter(function (t) {
-                if (searchRegex && !(searchRegex.test(t.technology || "") || searchRegex.test(t.mechanism || ""))) {
+                if (searchRegex &&
+                    !(searchRegex.test(t.technology || '') || searchRegex.test(t.mechanism || ''))) {
                     return false;
                 }
                 if (mainCapFilter && t.mainCap !== mainCapFilter) {
@@ -16333,42 +16421,62 @@ var TechnologyOverviewPage = function () {
                 return true;
             });
             return [
-                (0, mithril_1.default)(".row.technology-overview-page", { style: "height: 95vh" }, [
-                    (0, mithril_1.default)(".col.s12", (0, mithril_1.default)(".row", (0, mithril_1.default)(".col.s6.m4", (0, mithril_1.default)(ui_1.TextInputWithClear, {
-                        label: "Filter",
-                        iconName: "filter_list",
-                        className: "bottom-margin0",
+                (0, mithril_1.default)('.row.technology-overview-page', { style: 'height: 95vh' }, [
+                    (0, mithril_1.default)('.col.s12', (0, mithril_1.default)('.row', (0, mithril_1.default)('.col.s6.m4', (0, mithril_1.default)(ui_1.TextInputWithClear, {
+                        label: 'Filter',
+                        iconName: 'filter_list',
+                        className: 'bottom-margin0',
                         oninput: function (s) {
-                            searchFilter = s || "";
+                            searchFilter = s || '';
                             mithril_1.default.redraw();
                         },
-                    })), (0, mithril_1.default)(".col.s6.m4", (0, mithril_1.default)(mithril_materialized_1.Select, {
-                        label: "Capability",
-                        options: __spreadArray([{ id: 0, label: "-" }], utils_1.mainCapabilityOptions, true),
-                        onchange: function (c) { return mainCapFilter = +c; },
-                    })), (0, mithril_1.default)(".col.s12.m4", (0, mithril_1.default)(mithril_materialized_1.FlatButton, {
-                        label: "Add technology",
-                        iconName: "add",
+                    })), (0, mithril_1.default)('.col.s6.m4', (0, mithril_1.default)(mithril_materialized_1.Select, {
+                        label: 'Capability',
+                        options: __spreadArray([{ id: 0, label: '-' }], utils_1.mainCapabilityOptions, true),
+                        onchange: function (c) { return (mainCapFilter = +c); },
+                    })), (0, mithril_1.default)('.col.s12.m4', (0, mithril_1.default)(mithril_materialized_1.FlatButton, {
+                        label: 'Add technology',
+                        iconName: 'add',
                         onclick: function () {
                             var newTech = { id: (0, mithril_materialized_1.uniqueId)() };
                             model.technologies.push(newTech);
                             saveModel(model);
-                            changePage(models_1.Dashboards.TECHNOLOGY, { id: newTech.id, edit: "true" });
+                            changePage(models_1.Dashboards.TECHNOLOGY, { id: newTech.id, edit: 'true' });
                         },
                     })))),
                     filteredTechnologies.map(function (t) {
-                        return (0, mithril_1.default)(".col.s12.m6.l4.xl3", (0, mithril_1.default)(".card.medium", [
-                            (0, mithril_1.default)(".card-image", [
-                                (0, mithril_1.default)("a", {
+                        var isBookmarked = bookmarks.indexOf(t.id) >= 0;
+                        return (0, mithril_1.default)('.col.s12.m6.l4', (0, mithril_1.default)('.card.medium', [
+                            (0, mithril_1.default)('.card-image', [
+                                (0, mithril_1.default)('a', {
                                     href: services_1.routingSvc.href(models_1.Dashboards.TECHNOLOGY, "?id=".concat(t.id)),
-                                }, (0, mithril_1.default)("img", { src: t.url, alt: t.technology })),
-                                (0, mithril_1.default)("span.card-title.black-text", t.technology),
+                                }, (0, mithril_1.default)('img', { src: t.url, alt: t.technology })),
+                                (0, mithril_1.default)('span.card-title.bold', { className: isBookmarked ? 'amber-text' : 'black-text' }, t.technology),
                             ]),
-                            (0, mithril_1.default)(".card-content", (0, mithril_1.default)("p", t.application)),
-                            (0, mithril_1.default)(".card-action", (0, mithril_1.default)("a", {
+                            (0, mithril_1.default)('.card-content', (0, mithril_1.default)('p', t.application)),
+                            (0, mithril_1.default)('.card-action', 
+                            // [
+                            //   m(FlatButton, {
+                            //     className: 'right',
+                            //     iconName: 'visibility',
+                            //     href: routingSvc.href(Dashboards.TECHNOLOGY, `?id=${t.id}`),
+                            //     onclick: () => setTechnology(t),
+                            //   }),
+                            //   m(FlatButton, {
+                            //     className: 'right',
+                            //     iconName: 'bookmark_add',
+                            //     onclick: () => bookmark(t.id),
+                            //   }),
+                            // ]
+                            (0, mithril_1.default)('a', {
                                 href: services_1.routingSvc.href(models_1.Dashboards.TECHNOLOGY, "?id=".concat(t.id)),
                                 onclick: function () { return setTechnology(t); },
-                            }, "Open")),
+                            }, (0, mithril_1.default)(mithril_materialized_1.Icon, { iconName: 'visibility' })), (0, mithril_1.default)('a', {
+                                href: services_1.routingSvc.href(models_1.Dashboards.TECHNOLOGIES),
+                                onclick: function () { return bookmark(t.id); },
+                            }, (0, mithril_1.default)(mithril_materialized_1.Icon, {
+                                iconName: isBookmarked ? 'bookmark_remove' : 'bookmark_add',
+                            }))),
                         ]));
                     }),
                 ]),
@@ -16397,22 +16505,54 @@ var mithril_ui_form_1 = __webpack_require__(2785);
 var models_1 = __webpack_require__(6454);
 var services_1 = __webpack_require__(2951);
 var utils_1 = __webpack_require__(6256);
-var settings_page_1 = __webpack_require__(4511);
+var extractRefs = function (t) {
+    var allText = [
+        t.application,
+        t.diff,
+        t.effectDuration,
+        t.ethical,
+        t.examples,
+        t.incubation,
+        t.mechanism,
+        t.practical,
+        t.sideEffects,
+    ].join(' ');
+    var m;
+    var references = [];
+    while ((m = utils_1.refRegex.exec(allText)) !== null) {
+        // This is necessary to avoid infinite loops with zero-width matches
+        if (m.index === utils_1.refRegex.lastIndex) {
+            utils_1.refRegex.lastIndex++;
+        }
+        // The result can be accessed through the `m`-variable.
+        m.forEach(function (match, groupIndex) {
+            console.log("Found match, group ".concat(groupIndex, ": ").concat(match));
+            var term = match.toLowerCase();
+            if (references.indexOf(term) < 0)
+                references.push(term);
+        });
+    }
+    return references;
+};
 var TechnologyPage = function () {
-    var id = "";
+    var id = '';
     var isEditting = false;
     var form = [];
+    var refIds;
+    var md;
     return {
         oninit: function (_a) {
             var _b = _a.attrs, _c = _b.state, model = _c.model, _d = _c.curTech, curTech = _d === void 0 ? {} : _d, _e = _b.actions, setPage = _e.setPage, setTechnology = _e.setTechnology;
             setPage(models_1.Dashboards.TECHNOLOGY);
-            id = mithril_1.default.route.param("id") || curTech.id || "";
-            isEditting =
-                mithril_1.default.route.param("edit") === true ? true : false;
-            console.log(isEditting);
-            var technologyOptions = model.technologies.filter(function (t) { return t.id !== id; }).map(function (t) { return ({ id: t.id, label: t.technology }); });
-            var literatureOptions = model.literature.map(function (l) { return ({ id: l.id, label: l.title }); });
-            form = (0, utils_1.technologyForm)(model.users, technologyOptions, literatureOptions);
+            id = mithril_1.default.route.param('id') || curTech.id || '';
+            isEditting = mithril_1.default.route.param('edit') === true ? true : false;
+            var technologyOptions = model.technologies
+                .filter(function (t) { return t.id !== id; })
+                .map(function (t) { return ({ id: t.id, label: t.technology }); });
+            form = (0, utils_1.technologyForm)(model.users, technologyOptions);
+            var _f = (0, utils_1.resolveRefs)(model), md2html = _f.md2html, ids = _f.ids;
+            md = md2html;
+            refIds = ids;
             if (id === curTech.id) {
                 return;
             }
@@ -16423,158 +16563,192 @@ var TechnologyPage = function () {
         },
         view: function (_a) {
             var _b = _a.attrs, _c = _b.state, _d = _c.curTech, curTech = _d === void 0 ? {} : _d, _e = _c.model, model = _e === void 0 ? models_1.defaultModel : _e, _f = _b.actions, saveModel = _f.saveModel, changePage = _f.changePage;
-            var users = model.users, literature = model.literature, technologies = model.technologies;
+            var users = model.users, technologies = model.technologies, _g = model.measurements, measurements = _g === void 0 ? [] : _g;
             var ownerId = curTech.owner;
             var owner = users.filter(function (u) { return u.id === ownerId; }).shift();
             var reviewers = curTech.reviewer && users.filter(function (u) { return curTech.reviewer.indexOf(u.id) >= 0; });
-            var usedLiterature = curTech.litID &&
-                curTech.litID.length > 0 &&
-                literature.filter(function (l) { return curTech.litID.indexOf(l.id) >= 0; });
-            var mailtoLink = owner && "mailto:".concat(owner.email, "?subject=").concat(curTech.technology.replace(/ /g, "%20"));
+            // const usedLiterature =
+            //   curTech.litID &&
+            //   curTech.litID.length > 0 &&
+            //   literature.filter((l) => curTech.litID.indexOf(l.id) >= 0);
+            var usedLiterature = extractRefs(curTech)
+                .filter(function (id) { return refIds.hasOwnProperty(id); })
+                .map(function (id) { return refIds[id]; });
+            var mailtoLink = owner && "mailto:".concat(owner.email, "?subject=").concat(curTech.technology.replace(/ /g, '%20'));
             var similarTech = curTech.similar &&
                 curTech.similar.length > 0 &&
                 technologies.filter(function (t) { return curTech.similar.indexOf(t.id) >= 0; });
+            var usedMeasurements = curTech.measurementIDs &&
+                measurements.filter(function (measurement) { return curTech.measurementIDs.indexOf(measurement.id) >= 0; });
             return [
-                (0, mithril_1.default)(".row.technology-page", { style: "height: 95vh" }, (0, mithril_1.default)(".col.s12", [
-                    (0, mithril_1.default)(".row", (0, mithril_1.default)(mithril_materialized_1.FlatButton, {
-                        className: "right",
-                        label: isEditting ? "Stop editting" : "Edit",
-                        iconName: "edit",
-                        onclick: function () { return isEditting = !isEditting; },
-                    }), isEditting && (0, mithril_1.default)(mithril_materialized_1.FlatButton, {
-                        className: "right",
-                        label: "Delete",
-                        iconName: "delete",
-                        onclick: function () {
-                            model.technologies =
-                                model.technologies.filter(function (t) { return t.id !== curTech.id; });
-                            saveModel(model);
-                            changePage(models_1.Dashboards.TECHNOLOGIES);
-                        },
-                    })),
-                    (0, mithril_1.default)(".row", isEditting ? (0, mithril_1.default)(mithril_ui_form_1.LayoutForm, {
-                        form: form,
-                        obj: curTech,
-                        onchange: function () {
-                            model.technologies =
-                                model.technologies.map(function (t) { return t.id === curTech.id ? curTech : t; });
-                            saveModel(model);
-                        },
-                    }) : [
-                        (0, mithril_1.default)(".row", [
-                            (0, mithril_1.default)(".col.s12.m6", (0, mithril_1.default)(".row.bottom-margin0", [
-                                (0, mithril_1.default)("h4", curTech.technology),
-                                curTech.application && (0, mithril_1.default)("p", [
-                                    (0, mithril_1.default)("span.bold", "Application: "),
-                                    curTech.application,
-                                ]),
-                                curTech.category && (0, mithril_1.default)("p", [
-                                    (0, mithril_1.default)("span.bold", "Category: "),
-                                    (0, utils_1.joinListWithAnd)(curTech.category.map(function (c) {
-                                        return (0, utils_1.getOptionsLabel)(utils_1.technologyCategoryOptions, c);
-                                    })) + ".",
-                                ]),
-                                curTech.hpeClassification && (0, mithril_1.default)("p", [
-                                    (0, mithril_1.default)("span.bold", "HPE classification: "),
-                                    (0, utils_1.getOptionsLabel)(utils_1.hpeClassificationOptions, curTech.hpeClassification) + ".",
-                                ]),
-                                curTech.mainCap && (0, mithril_1.default)("p", [
-                                    (0, mithril_1.default)("span.bold", "Main capability: "),
-                                    (0, utils_1.getOptionsLabel)(utils_1.mainCapabilityOptions, curTech.mainCap) + ".",
-                                ]),
-                                curTech.specificCap && (0, mithril_1.default)("p", [
-                                    (0, mithril_1.default)("span.bold", "Specific capability: "),
-                                    (0, utils_1.joinListWithAnd)(curTech.specificCap) + ".",
-                                ]),
-                                curTech.invasive && (0, mithril_1.default)("p", [
-                                    (0, mithril_1.default)("span.bold", "Invasive: "),
-                                    (0, utils_1.getOptionsLabel)(utils_1.invasivenessOptions, curTech.invasive) + ".",
-                                ]),
-                                curTech.maturity && (0, mithril_1.default)("p", [
-                                    (0, mithril_1.default)("span.bold", "Maturity: "),
-                                    (0, utils_1.getOptionsLabel)(utils_1.maturityOptions, curTech.maturity) + ".",
-                                ]),
-                                typeof curTech.booster !== "undefined" && (0, mithril_1.default)("p", [
-                                    (0, mithril_1.default)("span.bold", "Can be used as booster: "),
-                                    "".concat(curTech.booster ? "Yes" : "No", "."),
-                                ]),
-                            ])),
-                            curTech.url && (0, mithril_1.default)(".col.s6.m6", (0, mithril_1.default)("img.responsive-img", { src: curTech.url, alt: curTech.technology })),
-                            (0, mithril_1.default)(".col.s12", (0, mithril_1.default)(".row.bottom-margin0", [
-                                curTech.mechanism && (0, mithril_1.default)("p", [(0, mithril_1.default)("span.bold", "Mechanism: "), curTech.mechanism]),
-                                curTech.sideEffects && (0, mithril_1.default)("p", [
-                                    (0, mithril_1.default)("span.bold", "Side-effects: "),
-                                    curTech.sideEffects,
-                                ]),
-                                curTech.diff && (0, mithril_1.default)("p", [
-                                    (0, mithril_1.default)("span.bold", "Individual differences: "),
-                                    curTech.diff,
-                                ]),
-                                curTech.ethical && (0, mithril_1.default)("p", [
-                                    (0, mithril_1.default)("span.bold", "Ethical considerations: "),
-                                    curTech.ethical,
-                                ]),
-                                curTech.examples && (0, mithril_1.default)("p", [(0, mithril_1.default)("span.bold", "Examples: "), curTech.examples]),
-                                similarTech && (0, mithril_1.default)("p", (0, mithril_1.default)("span.bold", "Similar technolog".concat(similarTech.length > 1 ? "ies" : "y", ": ")), similarTech.map(function (s, i) {
-                                    return (0, mithril_1.default)("a", {
-                                        href: services_1.routingSvc.href(models_1.Dashboards.TECHNOLOGY, "?id=".concat(s.id)),
-                                    }, s.technology + (i < (similarTech.length - 1) ? ", " : "."));
-                                })),
-                            ])),
-                            (0, mithril_1.default)(".col.s6", (0, mithril_1.default)(".row", [
-                                curTech.evidenceDir && (0, mithril_1.default)("p", [
-                                    (0, mithril_1.default)("span.bold", "Evidence direction: "),
-                                    (0, utils_1.getOptionsLabel)(utils_1.evidenceDirOptions, curTech.evidenceDir) + ".",
-                                ]),
-                                curTech.evidenceScore && (0, mithril_1.default)("p", [
-                                    (0, mithril_1.default)("span.bold", "Evidence score: "),
-                                    (0, utils_1.getOptionsLabel)(utils_1.evidenceLevelOptions, curTech.evidenceScore) + ".",
-                                ]),
-                                curTech.availability && (0, mithril_1.default)("p", [
-                                    (0, mithril_1.default)("span.bold", "Availability: "),
-                                    (0, utils_1.getOptionsLabel)(utils_1.availabilityOptions, curTech.availability) + ".",
-                                ]),
-                            ])),
-                            owner && (0, mithril_1.default)(".col.s6", (0, mithril_1.default)(".card", [
-                                (0, mithril_1.default)(".card-image.waves-effect.waves-block.waves-light", [
-                                    (0, mithril_1.default)("a", owner &&
-                                        owner.url &&
-                                        (0, mithril_1.default)("img.activator", { src: owner.url, alt: owner.name }), (0, mithril_1.default)("span.card-title.black-text.bold", owner.name)),
-                                ]),
-                                (0, mithril_1.default)(".card-content", (0, mithril_1.default)("p", (0, mithril_1.default)("span.card-title.activator", "For more information: ", (0, mithril_1.default)("i.material-icons.right", "more_vert")), (0, mithril_1.default)("ul", [
-                                    (0, mithril_1.default)("li", [
-                                        (0, mithril_1.default)(mithril_materialized_1.Icon, {
-                                            iconName: "phone",
-                                            className: "tiny",
-                                        }),
-                                        (0, mithril_1.default)("a", { href: "call:".concat(owner.phone) }, " " + owner.phone),
+                (0, mithril_1.default)('.row.technology-page', { style: 'height: 95vh' }, (0, mithril_1.default)('.col.s12', [
+                    (0, mithril_1.default)('.row', (0, mithril_1.default)(mithril_materialized_1.FlatButton, {
+                        className: 'right',
+                        label: isEditting ? 'Stop editting' : 'Edit',
+                        iconName: 'edit',
+                        onclick: function () { return (isEditting = !isEditting); },
+                    }), isEditting &&
+                        (0, mithril_1.default)(mithril_materialized_1.FlatButton, {
+                            className: 'right',
+                            label: 'Delete',
+                            iconName: 'delete',
+                            onclick: function () {
+                                model.technologies = model.technologies.filter(function (t) { return t.id !== curTech.id; });
+                                saveModel(model);
+                                changePage(models_1.Dashboards.TECHNOLOGIES);
+                            },
+                        })),
+                    (0, mithril_1.default)('.row', isEditting
+                        ? (0, mithril_1.default)(mithril_ui_form_1.LayoutForm, {
+                            form: form,
+                            obj: curTech,
+                            onchange: function () {
+                                model.technologies = model.technologies.map(function (t) {
+                                    return t.id === curTech.id ? curTech : t;
+                                });
+                                saveModel(model);
+                            },
+                        })
+                        : [
+                            (0, mithril_1.default)('.row', [
+                                (0, mithril_1.default)('.col.s12.m6', (0, mithril_1.default)('.row.bottom-margin0', [
+                                    (0, mithril_1.default)('h4', curTech.technology),
+                                    curTech.application &&
+                                        (0, mithril_1.default)('p', [(0, mithril_1.default)('span.bold', 'Application: '), md(curTech.application)]),
+                                    curTech.category &&
+                                        (0, mithril_1.default)('p', [
+                                            (0, mithril_1.default)('span.bold', 'Category: '),
+                                            (0, utils_1.joinListWithAnd)(curTech.category.map(function (c) {
+                                                return (0, utils_1.getOptionsLabel)(utils_1.technologyCategoryOptions, c);
+                                            })) + '.',
+                                        ]),
+                                    curTech.hpeClassification &&
+                                        (0, mithril_1.default)('p', [
+                                            (0, mithril_1.default)('span.bold', 'HPE classification: '),
+                                            (0, utils_1.getOptionsLabel)(utils_1.hpeClassificationOptions, curTech.hpeClassification) +
+                                                '.',
+                                        ]),
+                                    curTech.mainCap &&
+                                        (0, mithril_1.default)('p', [
+                                            (0, mithril_1.default)('span.bold', 'Main capability: '),
+                                            (0, utils_1.getOptionsLabel)(utils_1.mainCapabilityOptions, curTech.mainCap) + '.',
+                                        ]),
+                                    curTech.specificCap &&
+                                        (0, mithril_1.default)('p', [
+                                            (0, mithril_1.default)('span.bold', 'Specific capability: '),
+                                            (0, utils_1.joinListWithAnd)(curTech.specificCap) + '.',
+                                        ]),
+                                    curTech.invasive &&
+                                        (0, mithril_1.default)('p', [
+                                            (0, mithril_1.default)('span.bold', 'Invasive: '),
+                                            (0, utils_1.getOptionsLabel)(utils_1.invasivenessOptions, curTech.invasive) + '.',
+                                        ]),
+                                    curTech.maturity &&
+                                        (0, mithril_1.default)('p', [
+                                            (0, mithril_1.default)('span.bold', 'Maturity: '),
+                                            (0, utils_1.getOptionsLabel)(utils_1.maturityOptions, curTech.maturity) + '.',
+                                        ]),
+                                    typeof curTech.booster !== 'undefined' &&
+                                        (0, mithril_1.default)('p', [
+                                            (0, mithril_1.default)('span.bold', 'Can be used as booster: '),
+                                            "".concat(curTech.booster ? 'Yes' : 'No', "."),
+                                        ]),
+                                ])),
+                                curTech.url &&
+                                    (0, mithril_1.default)('.col.s6.m6', (0, mithril_1.default)('img.responsive-img', { src: curTech.url, alt: curTech.technology })),
+                                (0, mithril_1.default)('.col.s12', (0, mithril_1.default)('.row.bottom-margin0', [
+                                    curTech.mechanism &&
+                                        (0, mithril_1.default)('p', [(0, mithril_1.default)('span.bold', 'Mechanism: '), md(curTech.mechanism)]),
+                                    curTech.sideEffects &&
+                                        (0, mithril_1.default)('p', [(0, mithril_1.default)('span.bold', 'Side-effects: '), md(curTech.sideEffects)]),
+                                    curTech.diff &&
+                                        (0, mithril_1.default)('p', [(0, mithril_1.default)('span.bold', 'Individual differences: '), md(curTech.diff)]),
+                                    curTech.ethical &&
+                                        (0, mithril_1.default)('p', [
+                                            (0, mithril_1.default)('span.bold', 'Ethical considerations: '),
+                                            md(curTech.ethical),
+                                        ]),
+                                    curTech.examples &&
+                                        (0, mithril_1.default)('p', [(0, mithril_1.default)('span.bold', 'Examples: '), md(curTech.examples)]),
+                                    similarTech &&
+                                        (0, mithril_1.default)('p', (0, mithril_1.default)('span.bold', "Similar technolog".concat(similarTech.length > 1 ? 'ies' : 'y', ": ")), similarTech.map(function (s, i) {
+                                            return (0, mithril_1.default)('a', {
+                                                href: services_1.routingSvc.href(models_1.Dashboards.TECHNOLOGY, "?id=".concat(s.id)),
+                                            }, s.technology + (i < similarTech.length - 1 ? ', ' : '.'));
+                                        })),
+                                ])),
+                                (0, mithril_1.default)('.col.s6', (0, mithril_1.default)('.row', [
+                                    curTech.evidenceDir &&
+                                        (0, mithril_1.default)('p', [
+                                            (0, mithril_1.default)('span.bold', 'Evidence direction: '),
+                                            (0, utils_1.getOptionsLabel)(utils_1.evidenceDirOptions, curTech.evidenceDir) + '.',
+                                        ]),
+                                    curTech.evidenceScore &&
+                                        (0, mithril_1.default)('p', [
+                                            (0, mithril_1.default)('span.bold', 'Evidence score: '),
+                                            (0, utils_1.getOptionsLabel)(utils_1.evidenceLevelOptions, curTech.evidenceScore) + '.',
+                                        ]),
+                                    curTech.availability &&
+                                        (0, mithril_1.default)('p', [
+                                            (0, mithril_1.default)('span.bold', 'Availability: '),
+                                            (0, utils_1.getOptionsLabel)(utils_1.availabilityOptions, curTech.availability) + '.',
+                                        ]),
+                                    usedMeasurements &&
+                                        usedMeasurements.length > 0 &&
+                                        (0, mithril_1.default)('p', [
+                                            (0, mithril_1.default)('span.bold', 'Measurement options: '),
+                                            (0, mithril_1.default)('ul.browser-default', usedMeasurements.map(function (measurement) {
+                                                return (0, mithril_1.default)('li', [
+                                                    (0, mithril_1.default)('a', { href: measurement.url, target: '_blank' }, measurement.title),
+                                                    (0, mithril_1.default)('p', md(measurement.desc)),
+                                                ]);
+                                            })),
+                                        ]),
+                                ])),
+                                owner &&
+                                    (0, mithril_1.default)('.col.s6', (0, mithril_1.default)('.card.large', [
+                                        (0, mithril_1.default)('.card-image.waves-effect.waves-block.waves-light', [
+                                            (0, mithril_1.default)('a', owner &&
+                                                owner.url &&
+                                                (0, mithril_1.default)('img.activator', { src: owner.url, alt: owner.name })),
+                                        ]),
+                                        (0, mithril_1.default)('.card-content', (0, mithril_1.default)('p', (0, mithril_1.default)('span.card-title.activator', owner.name, (0, mithril_1.default)('i.material-icons.right', 'more_vert')), (0, mithril_1.default)('ul', [
+                                            (0, mithril_1.default)('li', [
+                                                (0, mithril_1.default)(mithril_materialized_1.Icon, {
+                                                    iconName: 'phone',
+                                                    className: 'tiny',
+                                                }),
+                                                (0, mithril_1.default)('a', { href: "tel:".concat(owner.phone) }, ' ' + owner.phone),
+                                            ]),
+                                            (0, mithril_1.default)('li', [
+                                                (0, mithril_1.default)(mithril_materialized_1.Icon, {
+                                                    iconName: 'email',
+                                                    className: 'tiny',
+                                                }),
+                                                (0, mithril_1.default)('a', { href: mailtoLink }, ' ' + owner.email),
+                                            ]),
+                                        ]))),
+                                        (0, mithril_1.default)('.card-action', (0, mithril_1.default)('a', { href: mailtoLink }, 'Email')),
+                                        (0, mithril_1.default)('.card-reveal', [
+                                            (0, mithril_1.default)('span.card-title.bold', "Owner: ".concat(owner.name), (0, mithril_1.default)(mithril_materialized_1.Icon, { iconName: 'close', className: 'right' })),
+                                            reviewers.length > 0 &&
+                                                (0, mithril_1.default)('p', (0, mithril_1.default)('span', "Reviewer".concat(reviewers.length > 1 ? 's' : '', ": "), (0, utils_1.joinListWithAnd)(reviewers.map(function (r) { return r.name; })) + '.')),
+                                            (0, mithril_1.default)('p', [
+                                                (0, mithril_1.default)('span.bold', 'Status: '),
+                                                (0, utils_1.getOptionsLabel)(utils_1.statusOptions, curTech.status) + '.',
+                                            ]),
+                                        ]),
+                                    ])),
+                                usedLiterature &&
+                                    (0, mithril_1.default)('.col.s12', [
+                                        (0, mithril_1.default)('h5', 'References'),
+                                        (0, mithril_1.default)('dl.browser-default', usedLiterature.map(function (l) { return [
+                                            (0, mithril_1.default)('dt', (0, mithril_1.default)('a', { href: l.url, title: l.title, alt: l.title, target: '_blank' }, "[".concat(l.id, "]"))),
+                                            (0, mithril_1.default)('dd', l.title),
+                                        ]; })),
                                     ]),
-                                    (0, mithril_1.default)("li", [
-                                        (0, mithril_1.default)(mithril_materialized_1.Icon, {
-                                            iconName: "email",
-                                            className: "tiny",
-                                        }),
-                                        (0, mithril_1.default)("a", { href: mailtoLink }, " " + owner.email),
-                                    ]),
-                                ]))),
-                                (0, mithril_1.default)(".card-action", (0, mithril_1.default)("a", { href: mailtoLink }, "Email")),
-                                (0, mithril_1.default)(".card-reveal", [
-                                    (0, mithril_1.default)("span.card-title.bold", "Owner: ".concat(owner.name), (0, mithril_1.default)(mithril_materialized_1.Icon, { iconName: "close", className: "right" })),
-                                    reviewers.length > 0 && (0, mithril_1.default)("p", (0, mithril_1.default)("span", "Reviewer".concat(reviewers.length > 1 ? "s" : "", ": "), (0, utils_1.joinListWithAnd)(reviewers.map(function (r) { return r.name; })) + ".")),
-                                    (0, mithril_1.default)("p", [
-                                        (0, mithril_1.default)("span.bold", "Status: "),
-                                        (0, utils_1.getOptionsLabel)(utils_1.statusOptions, curTech.status) + ".",
-                                    ]),
-                                ]),
-                            ])),
-                            usedLiterature && (0, mithril_1.default)(".col.s12", [
-                                (0, mithril_1.default)("h5", "References"),
-                                (0, mithril_1.default)("ol.browser-default", usedLiterature.map(function (l) {
-                                    return (0, mithril_1.default)("li", (0, mithril_1.default)("a", { href: l.doi, target: "_blank" }, (0, mithril_1.default)("i", "\"".concat(l.title, "\"")), ", [".concat((0, utils_1.getOptionsLabel)(settings_page_1.literatureTypeOptions, l.type), "].")));
-                                })),
                             ]),
                         ]),
-                    ]),
                 ])),
             ];
         },
@@ -16756,10 +16930,11 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.AVAILABILITY = exports.EVIDENCE_DIRECTION = exports.EVIDENCE_LEVEL = exports.LITERATURE_TYPE = exports.MATURITY = exports.EFFECT_DIRECTION = exports.INVASIVENESS_OBTRUSIVENESS = exports.YES_NO = exports.PERSONALITY_CAPABILITY = exports.SOCIAL_CAPABILITY = exports.MENTAL_CAPABILITY = exports.PHYSICAL_CAPABILITY = exports.COGNITION_CAPABILITY = exports.MAIN_CAPABILITY = exports.HPE_CLASSIFICATION = exports.STATUS = exports.TECHNOLOGY_CATEGORY = exports.defaultModel = void 0;
 exports.defaultModel = {
     version: 1,
-    lastUpdate: (new Date()).valueOf(),
+    lastUpdate: new Date().valueOf(),
     technologies: [],
     literature: [],
     users: [],
+    measurements: [],
 };
 var TECHNOLOGY_CATEGORY;
 (function (TECHNOLOGY_CATEGORY) {
@@ -16985,7 +17160,8 @@ var mithril_1 = __importDefault(__webpack_require__(1022));
 var mergerino_1 = __importDefault(__webpack_require__(9198));
 var _1 = __webpack_require__(2951);
 var models_1 = __webpack_require__(6454);
-var MODEL_KEY = "HPET_MODEL";
+var MODEL_KEY = 'HPET_MODEL';
+var BOOKMARKS_KEY = 'HPET_BOOKMARK';
 var appActions = function (_a) {
     var update = _a.update;
     return ({
@@ -17004,13 +17180,30 @@ var appActions = function (_a) {
             update({ model: function () { return model; } });
         },
         setTechnology: function (curTech) { return update({ curTech: curTech }); },
+        bookmark: function (id) {
+            return update({
+                bookmarks: function (bookmarks) {
+                    if (bookmarks === void 0) { bookmarks = []; }
+                    var newBookmarks = (function () {
+                        if (bookmarks.indexOf(id) >= 0)
+                            return bookmarks.filter(function (b) { return b !== id; });
+                        bookmarks.push(id);
+                        return bookmarks;
+                    })();
+                    localStorage.setItem(BOOKMARKS_KEY, JSON.stringify(newBookmarks));
+                    return newBookmarks;
+                },
+            });
+        },
     });
 };
 exports.appActions = appActions;
 var ds = localStorage.getItem(MODEL_KEY);
 var model = ds ? JSON.parse(ds) : models_1.defaultModel;
+var b = localStorage.getItem(BOOKMARKS_KEY);
+var bookmarks = b ? JSON.parse(b) : [];
 var app = {
-    initial: { page: models_1.Dashboards.HOME, model: model, curTech: undefined },
+    initial: { page: models_1.Dashboards.HOME, model: model, curTech: undefined, bookmarks: bookmarks },
 };
 exports.cells = (0, mergerino_1.default)({ app: app });
 exports.cells.map(function () {
@@ -17067,19 +17260,19 @@ var RoutingService = /** @class */ (function () {
     });
     RoutingService.prototype.route = function (dashboardId, query) {
         var dashboard = this.dashboards.filter(function (d) { return d.id === dashboardId; }).shift();
-        return dashboard ? "#!" +
-            dashboard.route +
-            (query ? "?" + mithril_1.default.buildQueryString(query) : "") : this.defaultRoute;
+        return dashboard
+            ? '#!' + dashboard.route + (query ? '?' + mithril_1.default.buildQueryString(query) : '')
+            : this.defaultRoute;
     };
     RoutingService.prototype.href = function (dashboardId, params) {
-        if (params === void 0) { params = ""; }
+        if (params === void 0) { params = ''; }
         var dashboard = this.dashboards.filter(function (d) { return d.id === dashboardId; }).shift();
-        return dashboard ? "#!".concat(dashboard.route.replace(/:\w*/, "")).concat(params) : this.defaultRoute;
+        return dashboard ? "#!".concat(dashboard.route.replace(/:\w*/, '')).concat(params) : this.defaultRoute;
     };
     RoutingService.prototype.switchTo = function (dashboardId, params, query) {
         var dashboard = this.dashboards.filter(function (d) { return d.id === dashboardId; }).shift();
         if (dashboard) {
-            var url = dashboard.route + (query ? "?" + mithril_1.default.buildQueryString(query) : "");
+            var url = dashboard.route + (query ? '?' + mithril_1.default.buildQueryString(query) : '');
             mithril_1.default.route.set(url, params);
         }
     };
@@ -17087,25 +17280,27 @@ var RoutingService = /** @class */ (function () {
         // console.log('INIT');
         return this.dashboards.reduce(function (p, c) {
             p[c.route] =
-                c.hasNavBar === false ? {
-                    render: function () {
-                        var cell = (0, meiosis_1.cells)();
-                        var actions = (0, meiosis_1.appActions)(cell);
-                        return (0, mithril_1.default)(c.component, __assign(__assign({}, cell), { actions: actions }));
-                    },
-                } : {
-                    // onmatch:
-                    //   c.id === Dashboards.LOGIN
-                    //     ? undefined
-                    //     : () => {
-                    //         if (c.id !== Dashboards.HOME && !Auth.isLoggedIn()) m.route.set('/login');
-                    //       },
-                    render: function () {
-                        var cell = (0, meiosis_1.cells)();
-                        var actions = (0, meiosis_1.appActions)(cell);
-                        return (0, mithril_1.default)(layout_1.Layout, __assign(__assign({}, cell), { actions: actions, options: {} }), (0, mithril_1.default)(c.component, __assign(__assign({}, cell), { actions: actions })));
-                    },
-                };
+                c.hasNavBar === false
+                    ? {
+                        render: function () {
+                            var cell = (0, meiosis_1.cells)();
+                            var actions = (0, meiosis_1.appActions)(cell);
+                            return (0, mithril_1.default)(c.component, __assign(__assign({}, cell), { actions: actions }));
+                        },
+                    }
+                    : {
+                        // onmatch:
+                        //   c.id === Dashboards.LOGIN
+                        //     ? undefined
+                        //     : () => {
+                        //         if (c.id !== Dashboards.HOME && !Auth.isLoggedIn()) m.route.set('/login');
+                        //       },
+                        render: function () {
+                            var cell = (0, meiosis_1.cells)();
+                            var actions = (0, meiosis_1.appActions)(cell);
+                            return (0, mithril_1.default)(layout_1.Layout, __assign(__assign({}, cell), { actions: actions, options: {} }), (0, mithril_1.default)(c.component, __assign(__assign({}, cell), { actions: actions })));
+                        },
+                    };
             return p;
         }, {});
     };
@@ -17114,33 +17309,33 @@ var RoutingService = /** @class */ (function () {
 exports.routingSvc = new RoutingService([
     {
         id: models_1.Dashboards.HOME,
-        title: "HOME",
-        icon: "home",
-        route: "/",
+        title: 'HOME',
+        icon: 'home',
+        route: '/',
         visible: true,
         component: components_1.HomePage,
     },
     {
         id: models_1.Dashboards.TECHNOLOGIES,
-        title: "TECHNOLOGY OVERVIEW",
-        icon: "display_settings",
-        route: "/technologies",
+        title: 'TECHNOLOGY OVERVIEW',
+        icon: 'display_settings',
+        route: '/technologies',
         visible: true,
         component: technology_overview_page_1.TechnologyOverviewPage,
     },
     {
         id: models_1.Dashboards.TECHNOLOGY,
-        title: "TECHNOLOGY",
-        icon: "military_tech",
-        route: "/technology",
+        title: 'TECHNOLOGY',
+        icon: 'military_tech',
+        route: '/technology',
         visible: true,
         component: components_1.TechnologyPage,
     },
     {
         id: models_1.Dashboards.SETTINGS,
-        title: "LITERATURE & USERS",
-        icon: "menu_book",
-        route: "/literature",
+        title: 'References',
+        icon: 'menu_book',
+        route: '/literature',
         visible: true,
         component: components_1.SettingsPage,
     },
@@ -17154,9 +17349,9 @@ exports.routingSvc = new RoutingService([
     // },
     {
         id: models_1.Dashboards.ABOUT,
-        title: "About",
-        icon: "info",
-        route: "/about",
+        title: 'About',
+        icon: 'info',
+        route: '/about',
         visible: true,
         component: components_1.AboutPage,
     },
@@ -17166,13 +17361,27 @@ exports.routingSvc = new RoutingService([
 /***/ }),
 
 /***/ 6256:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
 
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.technologyForm = exports.availabilityOptions = exports.evidenceLevelOptions = exports.evidenceDirOptions = exports.maturityOptions = exports.invasivenessOptions = exports.mainCapabilityOptions = exports.hpeClassificationOptions = exports.technologyCategoryOptions = exports.statusOptions = exports.joinListWithAnd = exports.getOptionsLabel = exports.getTextColorFromBackground = exports.formatDate = exports.debounce = exports.capitalize = exports.subSup = void 0;
+exports.resolveRefs = exports.refRegex = exports.markdown2html = exports.technologyForm = exports.availabilityOptions = exports.evidenceLevelOptions = exports.evidenceDirOptions = exports.maturityOptions = exports.invasivenessOptions = exports.mainCapabilityOptions = exports.hpeClassificationOptions = exports.technologyCategoryOptions = exports.statusOptions = exports.joinListWithAnd = exports.getOptionsLabel = exports.getTextColorFromBackground = exports.formatDate = exports.debounce = exports.capitalize = exports.subSup = void 0;
+var mithril_1 = __importDefault(__webpack_require__(1022));
 var mithril_materialized_1 = __webpack_require__(1110);
+var mithril_ui_form_1 = __webpack_require__(2785);
 var models_1 = __webpack_require__(6454);
 var supRegex = /\^([^_ ]+)(_|$|\s)/g;
 var subRegex = /\_([^\^ ]+)(\^|$|\s)/g;
@@ -17181,9 +17390,7 @@ var subSup = function (s) {
     return s ? s.replace(supRegex, "<sup>$1</sup>").replace(subRegex, "<sub>$1</sub>") : s;
 };
 exports.subSup = subSup;
-var capitalize = function (s) {
-    return s && s.charAt(0).toUpperCase() + s.slice(1);
-};
+var capitalize = function (s) { return s && s.charAt(0).toUpperCase() + s.slice(1); };
 exports.capitalize = capitalize;
 /**
  * Debounce function wrapper, i.e. between consecutive calls of the wrapped function,
@@ -17200,10 +17407,9 @@ var debounce = function (func, timeout) {
             args[_i] = arguments[_i];
         }
         clearTimeout(timer);
-        timer =
-            window.setTimeout(function () {
-                func.apply(void 0, args);
-            }, timeout);
+        timer = window.setTimeout(function () {
+            func.apply(void 0, args);
+        }, timeout);
     };
 };
 exports.debounce = debounce;
@@ -17220,275 +17426,299 @@ exports.formatDate = formatDate;
  */
 var getTextColorFromBackground = function (backgroundColor) {
     if (!backgroundColor) {
-        return "black-text";
+        return 'black-text';
     }
     var c = backgroundColor.substring(1); // strip #
     var rgb = parseInt(c, 16); // convert rrggbb to decimal
     var r = (rgb >> 16) & 0xff; // extract red
     var g = (rgb >> 8) & 0xff; // extract green
     var b = (rgb >> 0) & 0xff; // extract blue
-    var luma = (0.2126 * r) + (0.7152 * g) + (0.0722 * b); // per ITU-R BT.709
-    return luma < 105 ? "white-text" : "black-text";
+    var luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // per ITU-R BT.709
+    return luma < 105 ? 'white-text' : 'black-text';
 };
 exports.getTextColorFromBackground = getTextColorFromBackground;
 var getOptionsLabel = function (options, id) {
     if (!id) {
-        return "";
+        return '';
     }
     var found = options.filter(function (o) { return o.id === id; }).shift();
-    return found ? found.label : "";
+    return found ? found.label : '';
 };
 exports.getOptionsLabel = getOptionsLabel;
 /** Join a list of items with a comma, and use AND for the last item in the list. */
 var joinListWithAnd = function (arr, and, prefix) {
     if (arr === void 0) { arr = []; }
-    if (and === void 0) { and = "and"; }
-    if (prefix === void 0) { prefix = ""; }
-    return arr.length === 0 ? "" : prefix + (arr.length === 1 ? arr[0] : "".concat(arr.slice(0, arr.length - 1).join(", "), " ").concat(and, " ").concat(arr[arr.length - 1]));
+    if (and === void 0) { and = 'and'; }
+    if (prefix === void 0) { prefix = ''; }
+    return arr.length === 0
+        ? ''
+        : prefix +
+            (arr.length === 1
+                ? arr[0]
+                : "".concat(arr.slice(0, arr.length - 1).join(', '), " ").concat(and, " ").concat(arr[arr.length - 1]));
 };
 exports.joinListWithAnd = joinListWithAnd;
 exports.statusOptions = [
-    { id: models_1.STATUS.FIRST_DRAFT, label: "First draft" },
-    { id: models_1.STATUS.READY_FOR_REVIEW, label: "Ready for review" },
-    { id: models_1.STATUS.UNDER_REVIEW, label: "Under review" },
-    { id: models_1.STATUS.REVIEWED, label: "Reviewed" },
-    { id: models_1.STATUS.FINISHED, label: "Finished" },
+    { id: models_1.STATUS.FIRST_DRAFT, label: 'First draft' },
+    { id: models_1.STATUS.READY_FOR_REVIEW, label: 'Ready for review' },
+    { id: models_1.STATUS.UNDER_REVIEW, label: 'Under review' },
+    { id: models_1.STATUS.REVIEWED, label: 'Reviewed' },
+    { id: models_1.STATUS.FINISHED, label: 'Finished' },
 ];
 exports.technologyCategoryOptions = [
-    { id: models_1.TECHNOLOGY_CATEGORY.HARDWARE, label: "Hardware" },
-    { id: models_1.TECHNOLOGY_CATEGORY.BIO_ENHANCEMENT, label: "Bio-enhancement" },
+    { id: models_1.TECHNOLOGY_CATEGORY.HARDWARE, label: 'Hardware' },
+    { id: models_1.TECHNOLOGY_CATEGORY.BIO_ENHANCEMENT, label: 'Bio-enhancement' },
     {
         id: models_1.TECHNOLOGY_CATEGORY.PHARMACOLOGICAL_SUBSTANCES_SUPPLEMENTS_AND_NUTRITION,
-        label: "Pharmacological substances, supplements and nutrition",
+        label: 'Pharmacological substances, supplements and nutrition',
     },
-    { id: models_1.TECHNOLOGY_CATEGORY.TRAINING, label: "Training" },
-    { id: models_1.TECHNOLOGY_CATEGORY.SELF_REGULATION, label: "Self-regulation" },
-    { id: models_1.TECHNOLOGY_CATEGORY.NUTRITION, label: "Nutrition" },
-    { id: models_1.TECHNOLOGY_CATEGORY.OTHER, label: "Other" },
+    { id: models_1.TECHNOLOGY_CATEGORY.TRAINING, label: 'Training' },
+    { id: models_1.TECHNOLOGY_CATEGORY.SELF_REGULATION, label: 'Self-regulation' },
+    { id: models_1.TECHNOLOGY_CATEGORY.NUTRITION, label: 'Nutrition' },
+    { id: models_1.TECHNOLOGY_CATEGORY.OTHER, label: 'Other' },
 ];
 exports.hpeClassificationOptions = [
-    { id: models_1.HPE_CLASSIFICATION.OPTIMIZATION, label: "Optimization" },
-    { id: models_1.HPE_CLASSIFICATION.ENHANCEMENT, label: "Enhancement" },
-    { id: models_1.HPE_CLASSIFICATION.DEGRADATION, label: "Degradation" },
+    { id: models_1.HPE_CLASSIFICATION.OPTIMIZATION, label: 'Optimization' },
+    { id: models_1.HPE_CLASSIFICATION.ENHANCEMENT, label: 'Enhancement' },
+    { id: models_1.HPE_CLASSIFICATION.DEGRADATION, label: 'Degradation' },
 ];
 exports.mainCapabilityOptions = [
-    { id: models_1.MAIN_CAPABILITY.COGNITION, label: "Cognition" },
-    { id: models_1.MAIN_CAPABILITY.PHYSICAL, label: "Physical" },
-    { id: models_1.MAIN_CAPABILITY.MENTAL, label: "Mental" },
-    { id: models_1.MAIN_CAPABILITY.SOCIAL, label: "Social" },
-    { id: models_1.MAIN_CAPABILITY.PHYSIOLOGICAL, label: "Physiological" },
-    { id: models_1.MAIN_CAPABILITY.PERSONALITY, label: "Personality" },
+    { id: models_1.MAIN_CAPABILITY.COGNITION, label: 'Cognition' },
+    { id: models_1.MAIN_CAPABILITY.PHYSICAL, label: 'Physical' },
+    { id: models_1.MAIN_CAPABILITY.MENTAL, label: 'Mental' },
+    { id: models_1.MAIN_CAPABILITY.SOCIAL, label: 'Social' },
+    { id: models_1.MAIN_CAPABILITY.PHYSIOLOGICAL, label: 'Physiological' },
+    { id: models_1.MAIN_CAPABILITY.PERSONALITY, label: 'Personality' },
 ];
 exports.invasivenessOptions = [
-    { id: models_1.INVASIVENESS_OBTRUSIVENESS.NO, label: "No" },
-    { id: models_1.INVASIVENESS_OBTRUSIVENESS.LOW, label: "Low" },
-    { id: models_1.INVASIVENESS_OBTRUSIVENESS.MEDIUM, label: "Medium" },
-    { id: models_1.INVASIVENESS_OBTRUSIVENESS.HIGH, label: "High" },
+    { id: models_1.INVASIVENESS_OBTRUSIVENESS.NO, label: 'No' },
+    { id: models_1.INVASIVENESS_OBTRUSIVENESS.LOW, label: 'Low' },
+    { id: models_1.INVASIVENESS_OBTRUSIVENESS.MEDIUM, label: 'Medium' },
+    { id: models_1.INVASIVENESS_OBTRUSIVENESS.HIGH, label: 'High' },
 ];
 exports.maturityOptions = [
-    { id: models_1.MATURITY.LOW, label: "Low" },
-    { id: models_1.MATURITY.MEDIUM, label: "Medium" },
-    { id: models_1.MATURITY.HIGH, label: "High" },
+    { id: models_1.MATURITY.LOW, label: 'Low' },
+    { id: models_1.MATURITY.MEDIUM, label: 'Medium' },
+    { id: models_1.MATURITY.HIGH, label: 'High' },
 ];
 exports.evidenceDirOptions = [
-    { id: models_1.EVIDENCE_DIRECTION.GENERALLY_IN_FAVOR, label: "Generally in favor" },
-    { id: models_1.EVIDENCE_DIRECTION.GENERALLY_AGAINST, label: "Generally against" },
-    { id: models_1.EVIDENCE_DIRECTION.UNDECIDED, label: "Undecided" },
+    { id: models_1.EVIDENCE_DIRECTION.GENERALLY_IN_FAVOR, label: 'Generally in favor' },
+    { id: models_1.EVIDENCE_DIRECTION.GENERALLY_AGAINST, label: 'Generally against' },
+    { id: models_1.EVIDENCE_DIRECTION.UNDECIDED, label: 'Undecided' },
 ];
 exports.evidenceLevelOptions = [
-    { id: models_1.EVIDENCE_LEVEL.A, label: "A" },
-    { id: models_1.EVIDENCE_LEVEL.B, label: "B" },
-    { id: models_1.EVIDENCE_LEVEL.C, label: "C" },
+    { id: models_1.EVIDENCE_LEVEL.A, label: 'Based on consistent and good quality evidence' },
+    { id: models_1.EVIDENCE_LEVEL.B, label: 'Based on inconsistent or limited-quality evidence' },
+    { id: models_1.EVIDENCE_LEVEL.C, label: 'Based on consensus, usual practice, opinion.' },
 ];
 exports.availabilityOptions = [
     {
         id: models_1.AVAILABILITY.YES_WITHIN_THE_NETHERLANDS,
-        label: "Yes, within The Netherlands",
+        label: 'Yes, within The Netherlands',
     },
-    { id: models_1.AVAILABILITY.YES_WITHIN_THE_EU, label: "Yes, within the EU" },
-    { id: models_1.AVAILABILITY.YES_OUTSIDE_THE_EU, label: "Yes, outside the EU" },
-    { id: models_1.AVAILABILITY.NO, label: "No" },
-    { id: models_1.AVAILABILITY.UNKNOWN, label: "Unknown" },
+    { id: models_1.AVAILABILITY.YES_WITHIN_THE_EU, label: 'Yes, within the EU' },
+    { id: models_1.AVAILABILITY.YES_OUTSIDE_THE_EU, label: 'Yes, outside the EU' },
+    { id: models_1.AVAILABILITY.NO, label: 'No' },
+    { id: models_1.AVAILABILITY.UNKNOWN, label: 'Unknown' },
 ];
-var technologyForm = function (users, technologyOptions, literatureOptions) {
+var technologyForm = function (users, technologyOptions) {
     return [
-        { id: "id", type: "none", autogenerate: "id" },
+        { id: 'id', type: 'none', autogenerate: 'id' },
         {
-            id: "technology",
-            label: "Technology",
-            type: "text",
-            className: "col s8 m6",
+            id: 'technology',
+            label: 'Technology',
+            type: 'text',
+            className: 'col s8 m6',
         },
         {
-            id: "status",
-            label: "Status",
-            type: "select",
+            id: 'status',
+            label: 'Status',
+            type: 'select',
             options: exports.statusOptions,
-            className: "col s12 m2",
+            className: 'col s12 m2',
         },
         {
-            id: "category",
-            label: "Category",
-            type: "select",
+            id: 'category',
+            label: 'Category',
+            type: 'select',
             multiple: true,
             options: exports.technologyCategoryOptions,
-            className: "col s4",
+            className: 'col s4',
         },
         {
-            id: "owner",
-            label: "Owner",
-            type: "select",
+            id: 'owner',
+            label: 'Owner',
+            type: 'select',
             options: users.map(function (u) { return ({ id: u.id, label: u.name }); }),
-            className: "col s4 m3",
+            className: 'col s4 m3',
         },
         {
-            id: "reviewer",
-            label: "Reviewer",
-            type: "select",
+            id: 'reviewer',
+            label: 'Reviewer',
+            type: 'select',
             multiple: true,
             options: users.map(function (u) { return ({ id: u.id, label: u.name }); }),
-            className: "col s8 m9",
+            className: 'col s8 m9',
         },
         {
-            id: "application",
-            label: "Specific application",
-            type: "textarea",
-            className: "col s12",
+            id: 'application',
+            label: 'Specific application',
+            type: 'textarea',
+            className: 'col s12',
         },
         {
-            id: "hpeClassification",
-            label: "HPE classification",
-            type: "select",
-            className: "col s6 m3",
-            options: exports.hpeClassificationOptions,
-        },
-        {
-            id: "mainCap",
-            label: "Main capability",
-            type: "select",
-            className: "col s6 m3",
+            id: 'mainCap',
+            label: 'Main capability',
+            type: 'select',
+            className: 'col s6 m3',
             options: exports.mainCapabilityOptions,
         },
         {
-            id: "specificCap",
-            label: "Specific capability",
-            type: "tags",
-            className: "col s6 m6",
+            id: 'hpeClassification',
+            label: 'HPE classification',
+            type: 'select',
+            className: 'col s6 m3',
+            options: exports.hpeClassificationOptions,
         },
         {
-            id: "similar",
-            label: "Similar technologies",
-            type: "select",
-            multiple: true,
-            options: technologyOptions,
-            className: "col s6 m4",
-        },
-        {
-            id: "invasive",
-            label: "Invasive?",
-            type: "select",
-            className: "col s6 m4",
+            id: 'invasive',
+            label: 'Invasive?',
+            type: 'select',
+            className: 'col s6 m2',
             options: exports.invasivenessOptions,
         },
         {
-            id: "booster",
-            label: "Can be applied as booster?",
-            type: "checkbox",
-            className: "col s6 m4",
-            // options: [
-            // 	{ id: YES_NO.YES, label: "Yes" },
-            // 	{ id: YES_NO.NO, label: "No" },
-            // ],
+            id: 'booster',
+            label: 'Can be applied as booster?',
+            type: 'checkbox',
+            className: 'col s6 m4',
         },
         {
-            id: "mechanism",
-            label: "Mechanism",
-            type: "textarea",
-            className: "col s12",
+            id: 'specificCap',
+            label: 'Specific capability',
+            type: 'tags',
+            className: 'col s12',
         },
         {
-            id: "effectDuration",
-            label: "Effect duration",
-            type: "text",
-            className: "col s6 m4",
+            id: 'similar',
+            label: 'Similar technologies',
+            type: 'select',
+            multiple: true,
+            options: technologyOptions,
+            className: 'col s12',
         },
         {
-            id: "incubation",
-            label: "Effect incubation",
-            type: "text",
-            className: "col s6 m4",
+            id: 'mechanism',
+            label: 'Mechanism',
+            type: 'textarea',
+            className: 'col s12',
         },
         {
-            id: "maturity",
-            label: "Maturity",
-            type: "select",
-            className: "col s6 m4",
+            id: 'effectDuration',
+            label: 'Effect duration',
+            type: 'text',
+            className: 'col s12',
+        },
+        {
+            id: 'incubation',
+            label: 'Effect incubation',
+            type: 'text',
+            className: 'col s12',
+        },
+        {
+            id: 'diff',
+            label: 'Individual differences',
+            type: 'textarea',
+            className: 'col s12',
+        },
+        {
+            id: 'practical',
+            label: 'Practical execution',
+            type: 'textarea',
+            className: 'col s12',
+        },
+        {
+            id: 'sideEffects',
+            label: 'Side effects',
+            type: 'textarea',
+            className: 'col s12',
+        },
+        {
+            id: 'ethical',
+            label: 'Ethical considerations',
+            type: 'textarea',
+            className: 'col s12',
+        },
+        {
+            id: 'examples',
+            label: 'Examples of the intervention being used in practice',
+            type: 'textarea',
+            className: 'col s12',
+        },
+        {
+            id: 'maturity',
+            label: 'Maturity',
+            type: 'select',
+            className: 'col s6 m4',
             options: exports.maturityOptions,
         },
         {
-            id: "diff",
-            label: "Individual differences",
-            type: "textarea",
-            className: "col s12",
+            id: 'availability',
+            label: 'Availability',
+            type: 'select',
+            className: 'col s12 m4',
+            options: exports.availabilityOptions,
         },
         {
-            id: "practical",
-            label: "Practical execution",
-            type: "textarea",
-            className: "col s12",
-        },
-        {
-            id: "sideEffects",
-            label: "Side effects",
-            type: "textarea",
-            className: "col s12",
-        },
-        {
-            id: "ethical",
-            label: "Ethical considerations",
-            type: "textarea",
-            className: "col s12",
-        },
-        {
-            id: "examples",
-            label: "Examples of the intervention being used in practice",
-            type: "textarea",
-            className: "col s12",
-        },
-        {
-            id: "litID",
-            label: "Literature",
-            type: "select",
-            multiple: true,
-            className: "col s12",
-            options: literatureOptions,
-        },
-        {
-            id: "evidenceDir",
-            label: "Evidence direction",
-            type: "select",
-            className: "col s12 m4",
+            id: 'evidenceDir',
+            label: 'Evidence direction',
+            type: 'select',
+            className: 'col s12 m4',
             options: exports.evidenceDirOptions,
         },
         {
-            id: "evidenceScore",
-            label: "Evidence score",
-            type: "radio",
-            checkboxClass: "col s4",
-            className: "col s12 m4",
+            id: 'evidenceScore',
+            label: 'Evidence score',
+            type: 'radio',
+            checkboxClass: 'col s4',
+            className: 'col s12',
             options: exports.evidenceLevelOptions,
         },
-        {
-            id: "availability",
-            label: "Availability",
-            type: "select",
-            className: "col s12 m4",
-            options: exports.availabilityOptions,
-        },
-        { id: "url", label: "Link to image", type: "url", className: "col s12" },
+        { id: 'url', label: 'Link to image', type: 'url', className: 'col s12' },
     ];
 };
 exports.technologyForm = technologyForm;
+/** Convert markdown text to HTML */
+var markdown2html = function (markdown) {
+    if (markdown === void 0) { markdown = ''; }
+    return mithril_1.default.trust((0, mithril_ui_form_1.render)(markdown, true, true));
+};
+exports.markdown2html = markdown2html;
+/** RegExp for references of type [vullings2022] */
+exports.refRegex = /\[([a-zA-Z0-9_-]*)\]/gi;
+/** Convert markdown text to HTML after resolving all references. */
+var resolveRefs = function (model) {
+    var _a = model.literature, literature = _a === void 0 ? [] : _a, _b = model.measurements, measurements = _b === void 0 ? [] : _b;
+    var ids = __spreadArray(__spreadArray([], literature.map(function (lit) { return ({ id: lit.id, title: lit.title, url: lit.doi, type: 'LIT' }); }), true), measurements.map(function (mea) { return ({ id: mea.id, title: mea.title, url: mea.url, type: 'MEA' }); }), true).reduce(function (acc, cur) {
+        acc[cur.id] = cur;
+        return acc;
+    }, {});
+    return {
+        ids: ids,
+        md2html: function (markdown) {
+            if (markdown === void 0) { markdown = ''; }
+            var md = markdown.replace(exports.refRegex, function (replaceValue) {
+                var reference = ids[replaceValue.replace(/\[|\]/g, '')];
+                // console.log(replaceValue);
+                return reference
+                    ? "<a href=\"".concat(reference.url, "\" target=\"_blank\" alt=\"").concat(reference.title, "\" title=\"").concat(reference.title, "\">").concat(replaceValue, "</a>")
+                    : "<span class=\"red-text\">".concat(replaceValue, "</span>");
+            });
+            return (0, exports.markdown2html)(md);
+        },
+    };
+};
+exports.resolveRefs = resolveRefs;
 
 
 /***/ }),
