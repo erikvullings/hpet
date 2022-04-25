@@ -1,12 +1,13 @@
-/* @media only screen and (min-width: 601px) {
+@media only screen and (min-width: 601px) {
   .container {
     width: 95%;
   }
-} */
+}
+*/
 
 /* .container {
   max-width: unset;
-} */
+}
 body {
   font-size: 18px;
 }
@@ -597,9 +598,6 @@ ul.projects > li > span.project-id {
   }
 }
 
-.input-field {
-  margin-top: 0;
-}
 .responsive-img.center {
   margin: 0 auto 0 auto;
   display: block;
@@ -607,4 +605,9 @@ ul.projects > li > span.project-id {
 .col.bottom-margin0,
 .row.bottom-margin0 {
   margin-bottom: 0;
+}
+
+.card .card-title.bold,
+.bold {
+  font-weight: bold;
 }
