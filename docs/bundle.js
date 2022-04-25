@@ -16567,10 +16567,6 @@ var TechnologyPage = function () {
             var ownerId = curTech.owner;
             var owner = users.filter(function (u) { return u.id === ownerId; }).shift();
             var reviewers = curTech.reviewer && users.filter(function (u) { return curTech.reviewer.indexOf(u.id) >= 0; });
-            // const usedLiterature =
-            //   curTech.litID &&
-            //   curTech.litID.length > 0 &&
-            //   literature.filter((l) => curTech.litID.indexOf(l.id) >= 0);
             var usedLiterature = extractRefs(curTech)
                 .filter(function (id) { return refIds.hasOwnProperty(id); })
                 .map(function (id) { return refIds[id]; });
@@ -16677,7 +16673,7 @@ var TechnologyPage = function () {
                                             }, s.technology + (i < similarTech.length - 1 ? ', ' : '.'));
                                         })),
                                 ])),
-                                (0, mithril_1.default)('.col.s6', (0, mithril_1.default)('.row', [
+                                (0, mithril_1.default)('.col.s6.m8', (0, mithril_1.default)('.row', [
                                     curTech.evidenceDir &&
                                         (0, mithril_1.default)('p', [
                                             (0, mithril_1.default)('span.bold', 'Evidence direction: '),
@@ -16706,7 +16702,7 @@ var TechnologyPage = function () {
                                         ]),
                                 ])),
                                 owner &&
-                                    (0, mithril_1.default)('.col.s6', (0, mithril_1.default)('.card.large', [
+                                    (0, mithril_1.default)('.col.s6.m4', (0, mithril_1.default)('.card.large', [
                                         (0, mithril_1.default)('.card-image.waves-effect.waves-block.waves-light', [
                                             (0, mithril_1.default)('a', owner &&
                                                 owner.url &&
