@@ -95,11 +95,6 @@ export const TechnologyPage: MeiosisComponent = () => {
       const owner = users.filter((u) => u.id === ownerId).shift();
       const reviewers =
         curTech.reviewer && users.filter((u) => curTech.reviewer.indexOf(u.id) >= 0);
-      // const usedLiterature =
-      //   curTech.litID &&
-      //   curTech.litID.length > 0 &&
-      //   literature.filter((l) => curTech.litID.indexOf(l.id) >= 0);
-
       const usedLiterature = extractRefs(curTech)
         .filter((id) => refIds.hasOwnProperty(id))
         .map((id) => refIds[id]);
@@ -243,7 +238,7 @@ export const TechnologyPage: MeiosisComponent = () => {
                         ])
                       ),
                       m(
-                        '.col.s6',
+                        '.col.s6.m8',
                         m('.row', [
                           curTech.evidenceDir &&
                             m('p', [
@@ -282,7 +277,7 @@ export const TechnologyPage: MeiosisComponent = () => {
                       ),
                       owner &&
                         m(
-                          '.col.s6',
+                          '.col.s6.m4',
                           m('.card.large', [
                             m('.card-image.waves-effect.waves-block.waves-light', [
                               m(
