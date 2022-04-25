@@ -43,8 +43,7 @@ const extractRefs = (t: Technology) => {
     }
 
     // The result can be accessed through the `m`-variable.
-    m.forEach((match, groupIndex) => {
-      console.log(`Found match, group ${groupIndex}: ${match}`);
+    m.forEach((match) => {
       const term = match.toLowerCase();
       if (references.indexOf(term) < 0) references.push(term);
     });
