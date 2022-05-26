@@ -610,3 +610,9 @@ ul.projects > li > span.project-id {
 .bold {
   font-weight: bold;
 }
+
+.technology-overview-page {
+  left: 0;
+  position: absolute;
+  margin: 0 20px;
+}

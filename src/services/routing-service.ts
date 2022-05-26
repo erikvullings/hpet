@@ -111,7 +111,7 @@ export const routingSvc: RoutingService = new RoutingService([
   {
     id: Dashboards.SETTINGS,
     title: 'References',
-    icon: 'menu_book',
+    icon: 'settings',
     route: '/literature',
     visible: true,
     component: SettingsPage,

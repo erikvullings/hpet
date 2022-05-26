@@ -3,11 +3,12 @@ import { padLeft } from 'mithril-materialized';
 import { render, UIForm } from 'mithril-ui-form';
 import {
   AVAILABILITY,
-  DataModel,
+  CHOICE,
   EVIDENCE_DIRECTION,
   EVIDENCE_LEVEL,
   HPE_CLASSIFICATION,
   INVASIVENESS_OBTRUSIVENESS,
+  Literature,
   MAIN_CAPABILITY,
   MATURITY,
   STATUS,
@@ -91,6 +92,12 @@ export const statusOptions = [
   { id: STATUS.FINISHED, label: 'Finished' },
 ];
 
+export const NoYesUnknown = [
+  { id: CHOICE.NONE, label: 'None' },
+  { id: CHOICE.UNKNOWN, label: 'Unknown' },
+  { id: CHOICE.YES, label: 'Yes' },
+];
+
 export const technologyCategoryOptions = [
   { id: TECHNOLOGY_CATEGORY.HARDWARE, label: 'Hardware' },
   { id: TECHNOLOGY_CATEGORY.BIO_ENHANCEMENT, label: 'Bio-enhancement' },
@@ -160,10 +167,24 @@ export const technologyForm = (
   technologyOptions: Array<{ id: string; label: string }>
 ) => {
   return [
+    {
+      id: 'hasIndDiff',
+      label: 'Has individual differences?',
+      type: 'select',
+      options: NoYesUnknown,
+      className: 'col s4',
+    },
+    {
+      id: 'diff',
+      label: 'Individual differences',
+      type: 'textarea',
+      className: 'col s12',
+      show: 'hasIndDiff ===> 1',
+    },
     { id: 'id', type: 'none', autogenerate: 'id' },
     {
       id: 'technology',
-      label: 'Technology',
+      label: 'Technology title',
       type: 'text',
       className: 'col s8 m6',
     },
@@ -263,28 +284,52 @@ export const technologyForm = (
       className: 'col s12',
     },
     {
-      id: 'diff',
-      label: 'Individual differences',
-      type: 'textarea',
-      className: 'col s12',
-    },
-    {
       id: 'practical',
       label: 'Practical execution',
       type: 'textarea',
       className: 'col s12',
     },
     {
+      id: 'hasIndDiff',
+      label: 'Has individual differences?',
+      type: 'select',
+      options: NoYesUnknown,
+      className: 'col s4',
+    },
+    {
+      id: 'hasSideEffects',
+      label: 'Has side effects?',
+      type: 'select',
+      options: NoYesUnknown,
+      className: 'col s4',
+    },
+    {
+      id: 'hasEthical',
+      label: 'Has ethical considerations?',
+      type: 'select',
+      options: NoYesUnknown,
+      className: 'col s4',
+    },
+    {
+      id: 'diff',
+      label: 'Individual differences',
+      type: 'textarea',
+      className: 'col s12',
+      show: 'hasIndDiff > 1',
+    },
+    {
       id: 'sideEffects',
       label: 'Side effects',
       type: 'textarea',
       className: 'col s12',
+      show: 'hasSideEffects > 1',
     },
     {
       id: 'ethical',
       label: 'Ethical considerations',
       type: 'textarea',
       className: 'col s12',
+      show: 'hasEthical > 1',
     },
     {
       id: 'examples',
@@ -339,15 +384,10 @@ export type ReferenceType = {
 };
 
 /** Convert markdown text to HTML after resolving all references. */
-export const resolveRefs = (model: DataModel) => {
-  const { literature = [], measurements = [] } = model;
-
+export const resolveRefs = (literature: Literature[]) => {
   const ids = [
     ...literature.map(
       (lit) => ({ id: lit.id, title: lit.title, url: lit.doi, type: 'LIT' } as ReferenceType)
-    ),
-    ...measurements.map(
-      (mea) => ({ id: mea.id, title: mea.title, url: mea.url, type: 'MEA' } as ReferenceType)
     ),
   ].reduce((acc, cur) => {
     acc[cur.id] = cur;

@@ -64,10 +64,11 @@ export const TechnologyOverviewPage: MeiosisComponent = () => {
                 })
               ),
               m(
-                '.col.s12.m4',
+                '.right-align',
                 m(FlatButton, {
-                  label: 'Add technology',
+                  label: '',
                   iconName: 'add',
+                  className: 'small',
                   onclick: () => {
                     const newTech = { id: uniqueId() } as Technology;
                     model.technologies.push(newTech);

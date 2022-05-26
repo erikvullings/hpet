@@ -72,7 +72,7 @@ export const TechnologyPage: MeiosisComponent = () => {
         .filter((t) => t.id !== id)
         .map((t) => ({ id: t.id, label: t.technology }));
       form = technologyForm(model.users, technologyOptions);
-      const { md2html, ids } = resolveRefs(model);
+      const { md2html, ids } = resolveRefs([]);
       md = md2html;
       refIds = ids;
       if (id === curTech.id) {
@@ -89,7 +89,7 @@ export const TechnologyPage: MeiosisComponent = () => {
         actions: { saveModel, changePage },
       },
     }) => {
-      const { users, technologies, measurements = [] } = model;
+      const { users, technologies } = model;
       const ownerId = curTech.owner;
       const owner = users.filter((u) => u.id === ownerId).shift();
       const reviewers =
@@ -104,9 +104,6 @@ export const TechnologyPage: MeiosisComponent = () => {
         curTech.similar &&
         curTech.similar.length > 0 &&
         technologies.filter((t) => curTech.similar.indexOf(t.id) >= 0);
-      const usedMeasurements =
-        curTech.measurementIDs &&
-        measurements.filter((measurement) => curTech.measurementIDs.indexOf(measurement.id) >= 0);
 
       return [
         m(
@@ -152,8 +149,7 @@ export const TechnologyPage: MeiosisComponent = () => {
                         '.col.s12.m6',
                         m('.row.bottom-margin0', [
                           m('h4', curTech.technology),
-                          curTech.application &&
-                            m('p', [m('span.bold', 'Application: '), md(curTech.application)]),
+                          curTech.application && m('h5', md(curTech.application)),
                           curTech.category &&
                             m('p', [
                               m('span.bold', 'Category: '),
@@ -253,24 +249,6 @@ export const TechnologyPage: MeiosisComponent = () => {
                             m('p', [
                               m('span.bold', 'Availability: '),
                               getOptionsLabel(availabilityOptions, curTech.availability) + '.',
-                            ]),
-                          usedMeasurements &&
-                            usedMeasurements.length > 0 &&
-                            m('p', [
-                              m('span.bold', 'Measurement options: '),
-                              m(
-                                'ul.browser-default',
-                                usedMeasurements.map((measurement) =>
-                                  m('li', [
-                                    m(
-                                      'a',
-                                      { href: measurement.url, target: '_blank' },
-                                      measurement.title
-                                    ),
-                                    m('p', md(measurement.desc)),
-                                  ])
-                                )
-                              ),
                             ]),
                         ])
                       ),

@@ -2,18 +2,15 @@ export type DataModel = {
   version: number;
   lastUpdate: number;
   technologies: Technology[];
-  literature: Literature[];
   users: User[];
-  measurements: Measurement[];
+  curUser?: string;
 };
 
 export const defaultModel = {
   version: 1,
   lastUpdate: new Date().valueOf(),
   technologies: [],
-  literature: [],
   users: [],
-  measurements: [],
 } as DataModel;
 
 export enum TECHNOLOGY_CATEGORY {
@@ -32,6 +29,12 @@ export enum STATUS {
   UNDER_REVIEW,
   REVIEWED,
   FINISHED,
+}
+
+export enum CHOICE {
+  NONE = 1,
+  UNKNOWN,
+  YES,
 }
 
 export enum HPE_CLASSIFICATION {
@@ -213,6 +216,9 @@ export type Technology = {
   maturity: MATURITY;
   /** Practical execution */
   practical: string;
+  hasSideEffects: boolean;
+  hasEthical: boolean;
+  hasIndDiff: boolean;
   sideEffects: string;
   /** Ethical considerations */
   ethical: string;
@@ -234,4 +240,5 @@ export type User = {
   phone?: string;
   email?: string;
   url?: string;
+  isAuthor?: boolean;
 };
