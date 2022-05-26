@@ -616,3 +616,6 @@ ul.projects > li > span.project-id {
   position: absolute;
   margin: 0 20px;
 }
+.mui-repeat-list-controls {
+  margin-bottom: 0;
+}

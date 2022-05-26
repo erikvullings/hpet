@@ -17,7 +17,7 @@ export const TechnologyOverviewPage: MeiosisComponent = () => {
     }) => setPage(Dashboards.TECHNOLOGIES),
     view: ({
       attrs: {
-        state: { model, bookmarks = [] },
+        state: { model, curUser, bookmarks = [] },
         actions: { setTechnology, saveModel, changePage, bookmark },
       },
     }) => {
@@ -46,8 +46,8 @@ export const TechnologyOverviewPage: MeiosisComponent = () => {
               m(
                 '.col.s6.m4',
                 m(TextInputWithClear, {
-                  label: 'Filter',
-                  iconName: 'filter_list',
+                  label: 'Search',
+                  iconName: 'search',
                   className: 'bottom-margin0',
                   oninput: (s) => {
                     searchFilter = s || '';
@@ -63,20 +63,21 @@ export const TechnologyOverviewPage: MeiosisComponent = () => {
                   onchange: (c) => (mainCapFilter = +c),
                 })
               ),
-              m(
-                '.right-align',
-                m(FlatButton, {
-                  label: '',
-                  iconName: 'add',
-                  className: 'small',
-                  onclick: () => {
-                    const newTech = { id: uniqueId() } as Technology;
-                    model.technologies.push(newTech);
-                    saveModel(model);
-                    changePage(Dashboards.TECHNOLOGY, { id: newTech.id, edit: 'true' });
-                  },
-                })
-              )
+              curUser &&
+                m(
+                  '.right-align',
+                  m(FlatButton, {
+                    label: 'Add technology',
+                    iconName: 'add',
+                    className: 'small',
+                    onclick: () => {
+                      const newTech = { id: uniqueId() } as Technology;
+                      model.technologies.push(newTech);
+                      saveModel(model);
+                      changePage(Dashboards.TECHNOLOGY, { id: newTech.id, edit: 'true' });
+                    },
+                  })
+                )
             )
           ),
           filteredTechnologies.map((t) => {
@@ -101,19 +102,6 @@ export const TechnologyOverviewPage: MeiosisComponent = () => {
                 m('.card-content', m('p', t.application)),
                 m(
                   '.card-action',
-                  // [
-                  //   m(FlatButton, {
-                  //     className: 'right',
-                  //     iconName: 'visibility',
-                  //     href: routingSvc.href(Dashboards.TECHNOLOGY, `?id=${t.id}`),
-                  //     onclick: () => setTechnology(t),
-                  //   }),
-                  //   m(FlatButton, {
-                  //     className: 'right',
-                  //     iconName: 'bookmark_add',
-                  //     onclick: () => bookmark(t.id),
-                  //   }),
-                  // ]
                   m(
                     'a',
                     {
@@ -129,7 +117,7 @@ export const TechnologyOverviewPage: MeiosisComponent = () => {
                       onclick: () => bookmark(t.id),
                     },
                     m(Icon, {
-                      iconName: isBookmarked ? 'bookmark_remove' : 'bookmark_add',
+                      iconName: isBookmarked ? 'star' : 'star_border',
                     })
                   )
                 ),

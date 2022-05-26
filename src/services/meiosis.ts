@@ -4,11 +4,13 @@ import { routingSvc } from '.';
 import { Dashboards, DataModel, defaultModel, ID, Technology } from '../models';
 
 const MODEL_KEY = 'HPET_MODEL';
+const CUR_USER_KEY = 'HPET_CUR_USER';
 const BOOKMARKS_KEY = 'HPET_BOOKMARK';
 
 export interface State {
   page: Dashboards;
   model: DataModel;
+  curUser?: string;
   curTech?: Technology;
   bookmarks: ID[];
 }
@@ -21,6 +23,7 @@ export interface Actions {
     query?: Record<string, string | number | undefined>
   ) => void;
   saveModel: (ds: DataModel) => void;
+  saveCurUser: (ds: string) => void;
   setTechnology: (curTech: Technology) => void;
   bookmark: (id: string) => void;
 }
@@ -44,7 +47,12 @@ export const appActions: (cell: MeiosisCell<State>) => Actions = ({ update }) =>
     model.lastUpdate = Date.now();
     model.version = model.version ? model.version++ : 1;
     localStorage.setItem(MODEL_KEY, JSON.stringify(model));
+    console.log(JSON.stringify(model, null, 2));
     update({ model: () => model });
+  },
+  saveCurUser: (curUser: string) => {
+    localStorage.setItem(CUR_USER_KEY, curUser);
+    update({ curUser });
   },
   setTechnology: (curTech: Technology) => update({ curTech }),
   bookmark: (id: ID) =>
@@ -65,9 +73,10 @@ const ds = localStorage.getItem(MODEL_KEY);
 const model = ds ? JSON.parse(ds) : defaultModel;
 const b = localStorage.getItem(BOOKMARKS_KEY);
 const bookmarks = b ? JSON.parse(b) : [];
+const curUser = localStorage.getItem(CUR_USER_KEY) || '';
 
 const app = {
-  initial: { page: Dashboards.HOME, model, curTech: undefined, bookmarks } as State,
+  initial: { page: Dashboards.HOME, model, curTech: undefined, bookmarks, curUser } as State,
 };
 export const cells = setup<State>({ app });
 

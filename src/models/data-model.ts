@@ -3,7 +3,6 @@ export type DataModel = {
   lastUpdate: number;
   technologies: Technology[];
   users: User[];
-  curUser?: string;
 };
 
 export const defaultModel = {
@@ -216,9 +215,9 @@ export type Technology = {
   maturity: MATURITY;
   /** Practical execution */
   practical: string;
-  hasSideEffects: boolean;
-  hasEthical: boolean;
-  hasIndDiff: boolean;
+  hasSideEffects: CHOICE;
+  hasEthical: CHOICE;
+  hasIndDiff: CHOICE;
   sideEffects: string;
   /** Ethical considerations */
   ethical: string;
@@ -232,6 +231,8 @@ export type Technology = {
   /** Image link */
   url: string;
   measurementIDs: ID[];
+  /** Literature referred to in this article */
+  literature: Literature[];
 };
 
 export type User = {

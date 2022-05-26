@@ -9,6 +9,7 @@ import {
   HPE_CLASSIFICATION,
   INVASIVENESS_OBTRUSIVENESS,
   Literature,
+  LITERATURE_TYPE,
   MAIN_CAPABILITY,
   MATURITY,
   STATUS,
@@ -98,6 +99,13 @@ export const NoYesUnknown = [
   { id: CHOICE.YES, label: 'Yes' },
 ];
 
+export const resolveChoice = (choice?: CHOICE, text?: string) =>
+  !choice || choice === CHOICE.NONE
+    ? NoYesUnknown[0].label
+    : choice === CHOICE.UNKNOWN
+    ? NoYesUnknown[1].label
+    : text;
+
 export const technologyCategoryOptions = [
   { id: TECHNOLOGY_CATEGORY.HARDWARE, label: 'Hardware' },
   { id: TECHNOLOGY_CATEGORY.BIO_ENHANCEMENT, label: 'Bio-enhancement' },
@@ -162,25 +170,53 @@ export const availabilityOptions = [
   { id: AVAILABILITY.UNKNOWN, label: 'Unknown' },
 ];
 
+const literatureTypeOptions = [
+  { id: LITERATURE_TYPE.CASE_STUDY, label: 'Case study' },
+  { id: LITERATURE_TYPE.THESIS, label: 'Thesis' },
+  { id: LITERATURE_TYPE.REPORT, label: 'Report' },
+  { id: LITERATURE_TYPE.TECHNICAL_REPORT, label: 'Technical report' },
+  { id: LITERATURE_TYPE.PRODUCER_WEBSITE, label: 'Producer website' },
+  { id: LITERATURE_TYPE.WHITE_PAPER, label: 'White paper' },
+  { id: LITERATURE_TYPE.CONFERENCE_PROCEEDING, label: 'Conference proceedings' },
+  { id: LITERATURE_TYPE.PATENT, label: 'Patent' },
+  { id: LITERATURE_TYPE.POPULAR_MEDIA, label: 'Popular media' },
+  { id: LITERATURE_TYPE.CONSENSUS_STATEMENT, label: 'Consensus statement' },
+  { id: LITERATURE_TYPE.EMPERICAL_PR, label: 'Emperical (Peer Reviewed)' },
+  { id: LITERATURE_TYPE.REVIEW_PR, label: 'Review (Peer Reviewed)' },
+  {
+    id: LITERATURE_TYPE.SYSTEMATIC_REVIEW_PR,
+    label: 'Systematic review (Peer Reviewed)',
+  },
+  {
+    id: LITERATURE_TYPE.META_ANALYSIS_PR,
+    label: 'Meta analysis (Peer Reviewed)',
+  },
+];
+
+const literatureForm = [
+  {
+    id: 'title',
+    label: 'Title',
+    required: true,
+    type: 'text',
+    className: 'col s12 m4',
+  },
+  { id: 'doi', label: 'DOI', required: true, type: 'text', className: 'col s8 m5' },
+  {
+    id: 'type',
+    label: 'Type',
+    required: true,
+    type: 'select',
+    options: literatureTypeOptions,
+    className: 'col s4 m3',
+  },
+] as UIForm;
+
 export const technologyForm = (
   users: User[],
   technologyOptions: Array<{ id: string; label: string }>
 ) => {
   return [
-    {
-      id: 'hasIndDiff',
-      label: 'Has individual differences?',
-      type: 'select',
-      options: NoYesUnknown,
-      className: 'col s4',
-    },
-    {
-      id: 'diff',
-      label: 'Individual differences',
-      type: 'textarea',
-      className: 'col s12',
-      show: 'hasIndDiff ===> 1',
-    },
     { id: 'id', type: 'none', autogenerate: 'id' },
     {
       id: 'technology',
@@ -341,32 +377,47 @@ export const technologyForm = (
       id: 'maturity',
       label: 'Maturity',
       type: 'select',
-      className: 'col s6 m4',
+      className: 'col s6 m2',
       options: maturityOptions,
     },
     {
       id: 'availability',
       label: 'Availability',
       type: 'select',
-      className: 'col s12 m4',
+      className: 'col s12 m3',
       options: availabilityOptions,
     },
     {
       id: 'evidenceDir',
       label: 'Evidence direction',
       type: 'select',
-      className: 'col s12 m4',
+      className: 'col s12 m2',
       options: evidenceDirOptions,
     },
     {
       id: 'evidenceScore',
       label: 'Evidence score',
-      type: 'radio',
-      checkboxClass: 'col s4',
-      className: 'col s12',
+      type: 'select',
+      className: 'col s12 m5',
       options: evidenceLevelOptions,
     },
+    // {
+    //   id: 'evidenceScore',
+    //   label: 'Evidence score',
+    //   type: 'radio',
+    //   checkboxClass: 'col s4',
+    //   className: 'col s12',
+    //   options: evidenceLevelOptions,
+    // },
     { id: 'url', label: 'Link to image', type: 'url', className: 'col s12' },
+    {
+      id: 'literature',
+      label: 'Literature',
+      className: 'col s12',
+      repeat: true,
+      pageSize: 20,
+      type: literatureForm,
+    },
   ] as UIForm;
 };
 
@@ -374,20 +425,20 @@ export const technologyForm = (
 export const markdown2html = (markdown = '') => m.trust(render(markdown, true, true));
 
 /** RegExp for references of type [vullings2022] */
-export const refRegex = /\[([a-zA-Z0-9_-]*)\]/gi;
+export const refRegex = /\[(\d*)\]/gi;
 
 export type ReferenceType = {
-  id: string;
+  id: number;
   title: string;
   url?: string;
   type: 'LIT' | 'MEA';
 };
 
 /** Convert markdown text to HTML after resolving all references. */
-export const resolveRefs = (literature: Literature[]) => {
+export const resolveRefs = (literature: Literature[] = []) => {
   const ids = [
     ...literature.map(
-      (lit) => ({ id: lit.id, title: lit.title, url: lit.doi, type: 'LIT' } as ReferenceType)
+      (lit, i) => ({ id: i + 1, title: lit.title, url: lit.doi, type: 'LIT' } as ReferenceType)
     ),
   ].reduce((acc, cur) => {
     acc[cur.id] = cur;

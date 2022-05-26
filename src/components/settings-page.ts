@@ -61,25 +61,31 @@ export const SettingsPage: MeiosisComponent = () => {
     }) => setPage(Dashboards.SETTINGS),
     view: ({
       attrs: {
-        state: { model = defaultModel },
-        actions: { saveModel },
+        state: { model = defaultModel, curUser },
+        actions: { saveModel, saveCurUser },
       },
     }) => {
-      const { users = [], curUser } = model;
+      const { users = [] } = model;
       return [
-        m('.row.settings', [
-          m(Autocomplete, {
-            label: 'Current user',
-            initialValue: curUser,
-            data: users.reduce((acc, cur) => {
-              acc[cur.name] = cur.url || null;
-              return acc;
-            }, {} as Record<string, string | null>),
-            onchange: (v) => {
-              model.curUser = v;
-              saveModel(model);
-            },
-          }),
+        m('.settings', [
+          m('.row', [
+            m(Autocomplete, {
+              label: 'Current user',
+              initialValue: curUser,
+              data: users.reduce((acc, cur) => {
+                acc[cur.name] = cur.url || null;
+                return acc;
+              }, {} as Record<string, string | null>),
+              onchange: saveCurUser,
+              className: 'col s6',
+            }),
+            m(FlatButton, {
+              label: 'Logout',
+              onclick: () => saveCurUser(''),
+              iconName: 'logout',
+              className: 'col s6',
+            }),
+          ]),
           m('.row.users', [
             m('h4', 'Users'),
             m(Collapsible, {

@@ -1,4 +1,4 @@
-import m, { Vnode } from 'mithril';
+import m from 'mithril';
 import { FlatButton, Icon } from 'mithril-materialized';
 import { UIForm, LayoutForm } from 'mithril-ui-form';
 import { Dashboards, defaultModel, Technology } from '../models';
@@ -17,46 +17,13 @@ import {
   technologyCategoryOptions,
   technologyForm,
   resolveRefs,
-  refRegex,
-  ReferenceType,
+  resolveChoice,
 } from '../utils';
-
-const extractRefs = (t: Technology) => {
-  const allText = [
-    t.application,
-    t.diff,
-    t.effectDuration,
-    t.ethical,
-    t.examples,
-    t.incubation,
-    t.mechanism,
-    t.practical,
-    t.sideEffects,
-  ].join(' ');
-  let m: RegExpExecArray | null;
-
-  const references: string[] = [];
-  while ((m = refRegex.exec(allText)) !== null) {
-    // This is necessary to avoid infinite loops with zero-width matches
-    if (m.index === refRegex.lastIndex) {
-      refRegex.lastIndex++;
-    }
-
-    // The result can be accessed through the `m`-variable.
-    m.forEach((match) => {
-      const term = match.toLowerCase();
-      if (references.indexOf(term) < 0) references.push(term);
-    });
-  }
-  return references;
-};
 
 export const TechnologyPage: MeiosisComponent = () => {
   let id = '';
   let isEditting = false;
   let form: UIForm = [];
-  let refIds: Record<string, ReferenceType>;
-  let md: (markdown?: string) => Vnode;
 
   return {
     oninit: ({
@@ -72,9 +39,6 @@ export const TechnologyPage: MeiosisComponent = () => {
         .filter((t) => t.id !== id)
         .map((t) => ({ id: t.id, label: t.technology }));
       form = technologyForm(model.users, technologyOptions);
-      const { md2html, ids } = resolveRefs([]);
-      md = md2html;
-      refIds = ids;
       if (id === curTech.id) {
         return;
       }
@@ -85,7 +49,7 @@ export const TechnologyPage: MeiosisComponent = () => {
     },
     view: ({
       attrs: {
-        state: { curTech = {} as Technology, model = defaultModel },
+        state: { curTech = {} as Technology, model = defaultModel, curUser },
         actions: { saveModel, changePage },
       },
     }) => {
@@ -94,10 +58,9 @@ export const TechnologyPage: MeiosisComponent = () => {
       const owner = users.filter((u) => u.id === ownerId).shift();
       const reviewers =
         curTech.reviewer && users.filter((u) => curTech.reviewer.indexOf(u.id) >= 0);
-      const usedLiterature = extractRefs(curTech)
-        .filter((id) => refIds.hasOwnProperty(id))
-        .map((id) => refIds[id]);
+      const usedLiterature = curTech.literature;
 
+      const { md2html: md } = resolveRefs(curTech.literature);
       const mailtoLink =
         owner && `mailto:${owner.email}?subject=${curTech.technology.replace(/ /g, '%20')}`;
       const similarTech =
@@ -110,26 +73,27 @@ export const TechnologyPage: MeiosisComponent = () => {
           '.row.technology-page',
           { style: 'height: 95vh' },
           m('.col.s12', [
-            m(
-              '.row',
-              m(FlatButton, {
-                className: 'right',
-                label: isEditting ? 'Stop editting' : 'Edit',
-                iconName: 'edit',
-                onclick: () => (isEditting = !isEditting),
-              }),
-              isEditting &&
+            curUser &&
+              m(
+                '.row',
                 m(FlatButton, {
                   className: 'right',
-                  label: 'Delete',
-                  iconName: 'delete',
-                  onclick: () => {
-                    model.technologies = model.technologies.filter((t) => t.id !== curTech.id);
-                    saveModel(model);
-                    changePage(Dashboards.TECHNOLOGIES);
-                  },
-                })
-            ),
+                  label: isEditting ? 'Stop editting' : 'Edit',
+                  iconName: 'edit',
+                  onclick: () => (isEditting = !isEditting),
+                }),
+                isEditting &&
+                  m(FlatButton, {
+                    className: 'right',
+                    label: 'Delete',
+                    iconName: 'delete',
+                    onclick: () => {
+                      model.technologies = model.technologies.filter((t) => t.id !== curTech.id);
+                      saveModel(model);
+                      changePage(Dashboards.TECHNOLOGIES);
+                    },
+                  })
+              ),
             m(
               '.row',
               isEditting
@@ -203,13 +167,19 @@ export const TechnologyPage: MeiosisComponent = () => {
                           curTech.mechanism &&
                             m('p', [m('span.bold', 'Mechanism: '), md(curTech.mechanism)]),
                           curTech.sideEffects &&
-                            m('p', [m('span.bold', 'Side-effects: '), md(curTech.sideEffects)]),
+                            m('p', [
+                              m('span.bold', 'Side-effects: '),
+                              md(resolveChoice(curTech.hasSideEffects, curTech.sideEffects)),
+                            ]),
                           curTech.diff &&
-                            m('p', [m('span.bold', 'Individual differences: '), md(curTech.diff)]),
+                            m('p', [
+                              m('span.bold', 'Individual differences: '),
+                              md(resolveChoice(curTech.hasIndDiff, curTech.diff)),
+                            ]),
                           curTech.ethical &&
                             m('p', [
                               m('span.bold', 'Ethical considerations: '),
-                              md(curTech.ethical),
+                              md(resolveChoice(curTech.hasEthical, curTech.ethical)),
                             ]),
                           curTech.examples &&
                             m('p', [m('span.bold', 'Examples: '), md(curTech.examples)]),
@@ -250,6 +220,26 @@ export const TechnologyPage: MeiosisComponent = () => {
                               m('span.bold', 'Availability: '),
                               getOptionsLabel(availabilityOptions, curTech.availability) + '.',
                             ]),
+                          usedLiterature && [
+                            m('h5', 'References'),
+                            m(
+                              'ol.browser-default',
+                              usedLiterature.map((l) =>
+                                m(
+                                  'li',
+                                  m(
+                                    'a',
+                                    {
+                                      href: l.doi,
+                                      alt: l.title,
+                                      target: '_blank',
+                                    },
+                                    l.title
+                                  )
+                                )
+                              )
+                            ),
+                          ],
                         ])
                       ),
                       owner &&
@@ -314,24 +304,6 @@ export const TechnologyPage: MeiosisComponent = () => {
                             ]),
                           ])
                         ),
-                      usedLiterature &&
-                        m('.col.s12', [
-                          m('h5', 'References'),
-                          m(
-                            'dl.browser-default',
-                            usedLiterature.map((l) => [
-                              m(
-                                'dt',
-                                m(
-                                  'a',
-                                  { href: l.url, title: l.title, alt: l.title, target: '_blank' },
-                                  `[${l.id}]`
-                                )
-                              ),
-                              m('dd', l.title),
-                            ])
-                          ),
-                        ]),
                     ]),
                   ]
             ),
