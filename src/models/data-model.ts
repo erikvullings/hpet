@@ -51,6 +51,27 @@ export enum MAIN_CAPABILITY {
   PERSONALITY,
 }
 
+export enum SPECIFIC_CAPABILITY {
+  SITUATION_AWARENESS = 1,
+  EXECUTIVE_FUNCTIONS,
+  LONG_TERM_MEMORY,
+  SHORT_TERM_MEMORY,
+  DECLARATIVE_MEMORY,
+  VIGILANCE,
+  PSYCHOMOTOR,
+  VISUAL_PERCEPTION,
+  AUDITORY_PERCEPTION,
+  TACTILE_PERCEPTION,
+  PAIN,
+  ATTENTION,
+  SPEECH,
+  LEARNING,
+  ARITHMETIC,
+  SOCIAL_INTERACTION,
+  RECOVERY,
+  WORKING_MEMORY,
+}
+
 export enum COGNITION_CAPABILITY {
   SITUATION_AWARENESS = 1,
   EXECUTIVE_FUNCTIONS,
@@ -191,6 +212,8 @@ export type Measurement = {
 export type Technology = {
   id: ID;
   owner: ID;
+  /** Epoch time when last updated */
+  updated: number;
   reviewer: ID[];
   status: STATUS;
   technology: string;
@@ -203,7 +226,9 @@ export type Technology = {
   /** Main capability */
   mainCap: MAIN_CAPABILITY;
   /** Specific capabilities */
-  specificCap: string[];
+  specificCap: SPECIFIC_CAPABILITY[];
+  /** Synonyms and keywords */
+  synonyms: string[];
   invasive: INVASIVENESS_OBTRUSIVENESS;
   mechanism: string;
   booster: boolean;

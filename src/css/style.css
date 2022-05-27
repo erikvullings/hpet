@@ -619,3 +619,6 @@ ul.projects > li > span.project-id {
 .mui-repeat-list-controls {
   margin-bottom: 0;
 }
+h5.separator {
+  padding: 5px;
+}

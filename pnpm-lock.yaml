@@ -15,7 +15,7 @@ specifiers:
   meiosis-setup: ^6.0.0-beta.14
   mini-css-extract-plugin: ^2.6.0
   mithril: ^2.2.2
-  mithril-materialized: ^0.19.4
+  mithril-materialized: ^0.19.6
   mithril-ui-form: ^1.4.14
   mithril-ui-form-plugin: ^0.3.8
   mithril-ui-form-rating-plugin: ^0.4.3
@@ -33,7 +33,7 @@ dependencies:
   materialize-css: 1.0.0
   meiosis-setup: 6.0.0-beta.14
   mithril: 2.2.2
-  mithril-materialized: 0.19.4
+  mithril-materialized: 0.19.6
   mithril-ui-form: 1.4.14
   mithril-ui-form-plugin: 0.3.8
   mithril-ui-form-rating-plugin: 0.4.3_mithril@2.2.2
@@ -1694,11 +1694,10 @@ packages:
     dependencies:
       brace-expansion: 1.1.11
 
-  /mithril-materialized/0.19.4:
-    resolution: {integrity: sha512-n+OYIMFqyXL1zaA2F4HA5UsEbiijvkXIJrBD2CWYVf+HQzYMxcgwbKaMkeJMqLyFqBrlFe60+S6VaNEnGBcTuQ==}
+  /mithril-materialized/0.19.6:
+    resolution: {integrity: sha512-rlgHIVyoYO5YKvZTpqYbvCFPPUhmDIS251Sz4uCo++Z1X06BaIliVnycNqF2EtkLZP6ZcezLPiWr/uMBzwJLaA==}
     dependencies:
       materialize-css: 1.0.0
-      mithril: 2.2.2
     dev: false
 
   /mithril-ui-form-plugin/0.3.8:
@@ -1716,7 +1715,7 @@ packages:
   /mithril-ui-form/1.4.14:
     resolution: {integrity: sha512-Rj9Qv5k28vi7eEHAJPHaXIbn+7+pGXOKf+C5NTGfkUUwJ+LMYha5u2tH4Dpz+fR/PJwL5dtrUZwM4NXG1h1pJw==}
     dependencies:
-      mithril-materialized: 0.19.4
+      mithril-materialized: 0.19.6
       mithril-ui-form-plugin: 0.3.8
     dev: false
 

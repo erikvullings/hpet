@@ -4,6 +4,7 @@ import { render, UIForm } from 'mithril-ui-form';
 import {
   AVAILABILITY,
   CHOICE,
+  EFFECT_DIRECTION,
   EVIDENCE_DIRECTION,
   EVIDENCE_LEVEL,
   HPE_CLASSIFICATION,
@@ -12,6 +13,7 @@ import {
   LITERATURE_TYPE,
   MAIN_CAPABILITY,
   MATURITY,
+  SPECIFIC_CAPABILITY,
   STATUS,
   TECHNOLOGY_CATEGORY,
   User,
@@ -68,12 +70,15 @@ export const getTextColorFromBackground = (backgroundColor?: string) => {
   return luma < 105 ? 'white-text' : 'black-text';
 };
 
-export const getOptionsLabel = <T>(options: Array<{ id: T; label: string }>, id?: T) => {
+export const getOptionsLabel = <T>(
+  options: Array<{ id: T; label: string; title?: string }>,
+  id?: T
+) => {
   if (!id) {
     return '';
   }
   const found = options.filter((o) => o.id === id).shift();
-  return found ? found.label : '';
+  return found ? `${found.label}${found.title ? ` (${found.title})` : ''}` : '';
 };
 
 /** Join a list of items with a comma, and use AND for the last item in the list. */
@@ -84,6 +89,20 @@ export const joinListWithAnd = (arr: string[] = [], and = 'and', prefix = '') =>
       (arr.length === 1
         ? arr[0]
         : `${arr.slice(0, arr.length - 1).join(', ')} ${and} ${arr[arr.length - 1]}`);
+
+/** Convert a list of options to text (label + title?) */
+export const optionsToTxt = <T extends string | number>(
+  selectedIds: T | T[],
+  options: Array<{ id: T; label: string; title?: string }>
+) => {
+  if (!selectedIds || (selectedIds instanceof Array && selectedIds.length === 0)) return [''];
+  const ids = selectedIds instanceof Array ? selectedIds : [selectedIds];
+  const lookup = options.reduce((acc, cur) => {
+    acc[cur.id] = `${cur.label}${cur.title ? ` (${cur.title})` : ''}`;
+    return acc;
+  }, {} as Record<T, string>);
+  return ids.map((id) => lookup[id]);
+};
 
 export const statusOptions = [
   { id: STATUS.FIRST_DRAFT, label: 'First draft' },
@@ -134,17 +153,70 @@ export const mainCapabilityOptions = [
   { id: MAIN_CAPABILITY.PERSONALITY, label: 'Personality' },
 ];
 
+export const specificCapabilityOptions = [
+  { id: SPECIFIC_CAPABILITY.SITUATION_AWARENESS, label: 'Situation awareness' },
+  { id: SPECIFIC_CAPABILITY.EXECUTIVE_FUNCTIONS, label: 'Executive functions' },
+  { id: SPECIFIC_CAPABILITY.LONG_TERM_MEMORY, label: 'Long term memory' },
+  { id: SPECIFIC_CAPABILITY.SHORT_TERM_MEMORY, label: 'Short term memory' },
+  { id: SPECIFIC_CAPABILITY.DECLARATIVE_MEMORY, label: 'Declarative memory' },
+  { id: SPECIFIC_CAPABILITY.VIGILANCE, label: 'Vigilance' },
+  { id: SPECIFIC_CAPABILITY.PSYCHOMOTOR, label: 'Psychomotor' },
+  { id: SPECIFIC_CAPABILITY.VISUAL_PERCEPTION, label: 'Visual perception' },
+  { id: SPECIFIC_CAPABILITY.AUDITORY_PERCEPTION, label: 'Auditory perception' },
+  { id: SPECIFIC_CAPABILITY.TACTILE_PERCEPTION, label: 'Tactile perception' },
+  { id: SPECIFIC_CAPABILITY.PAIN, label: 'Pain' },
+  { id: SPECIFIC_CAPABILITY.ATTENTION, label: 'Attention' },
+  { id: SPECIFIC_CAPABILITY.SPEECH, label: 'Speech' },
+  { id: SPECIFIC_CAPABILITY.LEARNING, label: 'Learning' },
+  { id: SPECIFIC_CAPABILITY.ARITHMETIC, label: 'Arithmetic' },
+  { id: SPECIFIC_CAPABILITY.SOCIAL_INTERACTION, label: 'Social interaction' },
+  { id: SPECIFIC_CAPABILITY.RECOVERY, label: 'Recovery' },
+  { id: SPECIFIC_CAPABILITY.WORKING_MEMORY, label: 'Working memory' },
+];
+
 export const invasivenessOptions = [
-  { id: INVASIVENESS_OBTRUSIVENESS.NO, label: 'No' },
-  { id: INVASIVENESS_OBTRUSIVENESS.LOW, label: 'Low' },
-  { id: INVASIVENESS_OBTRUSIVENESS.MEDIUM, label: 'Medium' },
-  { id: INVASIVENESS_OBTRUSIVENESS.HIGH, label: 'High' },
+  {
+    id: INVASIVENESS_OBTRUSIVENESS.LOW,
+    label: 'Low',
+    title: 'No physical substance enters the body.',
+  },
+  {
+    id: INVASIVENESS_OBTRUSIVENESS.MEDIUM,
+    label: 'Medium',
+    title: 'Supplements, heavy training, interventions with low risk.',
+  },
+  {
+    id: INVASIVENESS_OBTRUSIVENESS.HIGH,
+    label: 'High',
+    title:
+      'High-impact pharma, implants, body modifications, interventions with high risk or pain.',
+  },
 ];
 
 export const maturityOptions = [
-  { id: MATURITY.LOW, label: 'Low' },
-  { id: MATURITY.MEDIUM, label: 'Medium' },
-  { id: MATURITY.HIGH, label: 'High' },
+  {
+    id: MATURITY.LOW,
+    label: 'Low',
+    title:
+      'Little to no research has been performed on the intervention. Existing research is inconclusive about the effectiveness.',
+  },
+  {
+    id: MATURITY.MEDIUM,
+    label: 'Medium',
+    title:
+      'A small body of research exists indicating effectiveness of the technology. Low TRL level applications.',
+  },
+  {
+    id: MATURITY.HIGH,
+    label: 'High',
+    title:
+      'One or more meta-analyses indicate effectiveness. The technology is already applied in practice.',
+  },
+];
+
+export const effectDirectionOptions = [
+  { id: EFFECT_DIRECTION.NEGATIVE, label: 'The technology descreases a subjects capability level' },
+  { id: EFFECT_DIRECTION.POSITIVE, label: 'The technology increases a subjects capability level' },
 ];
 
 export const evidenceDirOptions = [
@@ -218,6 +290,7 @@ export const technologyForm = (
 ) => {
   return [
     { id: 'id', type: 'none', autogenerate: 'id' },
+    { id: 'updated', type: 'none', autogenerate: 'timestamp' },
     {
       id: 'technology',
       label: 'Technology title',
@@ -290,6 +363,14 @@ export const technologyForm = (
     {
       id: 'specificCap',
       label: 'Specific capability',
+      type: 'select',
+      multiple: true,
+      options: specificCapabilityOptions,
+      className: 'col s12',
+    },
+    {
+      id: 'synonyms',
+      label: 'Synonyms and keywords',
       type: 'tags',
       className: 'col s12',
     },
@@ -303,7 +384,7 @@ export const technologyForm = (
     },
     {
       id: 'mechanism',
-      label: 'Mechanism',
+      label: 'How it works',
       type: 'textarea',
       className: 'col s12',
     },
@@ -396,7 +477,7 @@ export const technologyForm = (
     },
     {
       id: 'evidenceScore',
-      label: 'Evidence score',
+      label: 'Evidence quality',
       type: 'select',
       className: 'col s12 m5',
       options: evidenceLevelOptions,

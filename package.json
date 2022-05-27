@@ -35,7 +35,7 @@
     "materialize-css": "^1.0.0",
     "meiosis-setup": "^6.0.0-beta.14",
     "mithril": "^2.2.2",
-    "mithril-materialized": "^0.19.4",
+    "mithril-materialized": "^0.19.6",
     "mithril-ui-form": "^1.4.14",
     "mithril-ui-form-plugin": "^0.3.8",
     "mithril-ui-form-rating-plugin": "^0.4.3"

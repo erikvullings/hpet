@@ -1,5 +1,5 @@
 import m from 'mithril';
-import { Autocomplete, Collapsible, FlatButton } from 'mithril-materialized';
+import { Collapsible, FlatButton, Select } from 'mithril-materialized';
 import { LayoutForm, UIForm } from 'mithril-ui-form';
 import { Dashboards, defaultModel, User } from '../models';
 import { MeiosisComponent } from '../services';
@@ -69,16 +69,21 @@ export const SettingsPage: MeiosisComponent = () => {
       return [
         m('.settings', [
           m('.row', [
-            m(Autocomplete, {
-              label: 'Current user',
-              initialValue: curUser,
-              data: users.reduce((acc, cur) => {
-                acc[cur.name] = cur.url || null;
-                return acc;
-              }, {} as Record<string, string | null>),
-              onchange: saveCurUser,
-              className: 'col s6',
-            }),
+            [
+              m(Select, {
+                key: curUser,
+                label: 'Current user',
+                initialValue: curUser,
+                placeholder: 'Select user',
+                options: users.map((u) => ({ id: u.id, label: u.name })),
+                // data: users.reduce((acc, cur) => {
+                //   acc[cur.name] = cur.url || null;
+                //   return acc;
+                // }, {} as Record<string, string | null>),
+                onchange: (v) => v && saveCurUser(v[0] as string),
+                className: 'col s6',
+              }),
+            ],
             m(FlatButton, {
               label: 'Logout',
               onclick: () => saveCurUser(''),

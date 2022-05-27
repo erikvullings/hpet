@@ -18,6 +18,8 @@ import {
   technologyForm,
   resolveRefs,
   resolveChoice,
+  optionsToTxt,
+  specificCapabilityOptions,
 } from '../utils';
 
 export const TechnologyPage: MeiosisComponent = () => {
@@ -55,9 +57,8 @@ export const TechnologyPage: MeiosisComponent = () => {
     }) => {
       const { users, technologies } = model;
       const ownerId = curTech.owner;
+      const updated = curTech.updated ? new Date(curTech.updated) : undefined;
       const owner = users.filter((u) => u.id === ownerId).shift();
-      const reviewers =
-        curTech.reviewer && users.filter((u) => curTech.reviewer.indexOf(u.id) >= 0);
       const usedLiterature = curTech.literature;
 
       const { md2html: md } = resolveRefs(curTech.literature);
@@ -109,52 +110,61 @@ export const TechnologyPage: MeiosisComponent = () => {
                   })
                 : [
                     m('.row', [
+                      m('h3', curTech.technology),
+                      curTech.application && m('h4', md(curTech.application)),
                       m(
                         '.col.s12.m6',
-                        m('.row.bottom-margin0', [
-                          m('h4', curTech.technology),
-                          curTech.application && m('h5', md(curTech.application)),
-                          curTech.category &&
-                            m('p', [
-                              m('span.bold', 'Category: '),
-                              joinListWithAnd(
-                                curTech.category.map((c) =>
-                                  getOptionsLabel(technologyCategoryOptions, c)
-                                )
-                              ) + '.',
-                            ]),
-                          curTech.hpeClassification &&
-                            m('p', [
-                              m('span.bold', 'HPE classification: '),
-                              getOptionsLabel(hpeClassificationOptions, curTech.hpeClassification) +
-                                '.',
-                            ]),
-                          curTech.mainCap &&
-                            m('p', [
-                              m('span.bold', 'Main capability: '),
-                              getOptionsLabel(mainCapabilityOptions, curTech.mainCap) + '.',
-                            ]),
-                          curTech.specificCap &&
-                            m('p', [
-                              m('span.bold', 'Specific capability: '),
-                              joinListWithAnd(curTech.specificCap) + '.',
-                            ]),
-                          curTech.invasive &&
-                            m('p', [
-                              m('span.bold', 'Invasive: '),
-                              getOptionsLabel(invasivenessOptions, curTech.invasive) + '.',
-                            ]),
-                          curTech.maturity &&
-                            m('p', [
-                              m('span.bold', 'Maturity: '),
-                              getOptionsLabel(maturityOptions, curTech.maturity) + '.',
-                            ]),
-                          typeof curTech.booster !== 'undefined' &&
-                            m('p', [
-                              m('span.bold', 'Can be used as booster: '),
-                              `${curTech.booster ? 'Yes' : 'No'}.`,
-                            ]),
-                        ])
+                        m(
+                          '.row.bottom-margin0',
+                          m('h5.orange.separator', 'Description'),
+                          m('section', [
+                            curTech.category &&
+                              m('p', [
+                                m('span.bold', 'Category: '),
+                                joinListWithAnd(
+                                  curTech.category.map((c) =>
+                                    getOptionsLabel(technologyCategoryOptions, c)
+                                  )
+                                ) + '.',
+                              ]),
+                            curTech.hpeClassification &&
+                              m('p', [
+                                m('span.bold', 'HPE classification: '),
+                                getOptionsLabel(
+                                  hpeClassificationOptions,
+                                  curTech.hpeClassification
+                                ) + '.',
+                              ]),
+                            curTech.mainCap &&
+                              m('p', [
+                                m('span.bold', 'Main capability: '),
+                                getOptionsLabel(mainCapabilityOptions, curTech.mainCap) + '.',
+                              ]),
+                            curTech.specificCap &&
+                              curTech.specificCap.length &&
+                              m('p', [
+                                m('span.bold', 'Specific capability: '),
+                                joinListWithAnd(
+                                  optionsToTxt(curTech.specificCap, specificCapabilityOptions)
+                                ) + '.',
+                              ]),
+                            curTech.invasive &&
+                              m('p', [
+                                m('span.bold', 'Invasive: '),
+                                getOptionsLabel(invasivenessOptions, curTech.invasive) + '.',
+                              ]),
+                            curTech.maturity &&
+                              m('p', [
+                                m('span.bold', 'Maturity: '),
+                                getOptionsLabel(maturityOptions, curTech.maturity) + '.',
+                              ]),
+                            typeof curTech.booster !== 'undefined' &&
+                              m('p', [
+                                m('span.bold', 'Can be used as booster: '),
+                                `${curTech.booster ? 'Yes' : 'No'}.`,
+                              ]),
+                          ])
+                        )
                       ),
                       curTech.url &&
                         m(
@@ -164,8 +174,26 @@ export const TechnologyPage: MeiosisComponent = () => {
                       m(
                         '.col.s12',
                         m('.row.bottom-margin0', [
-                          curTech.mechanism &&
-                            m('p', [m('span.bold', 'Mechanism: '), md(curTech.mechanism)]),
+                          m('h5.orange.separator', 'How it works'),
+                          curTech.mechanism && m('p', md(curTech.mechanism)),
+                          curTech.examples &&
+                            m('p', [m('span.bold', 'Examples: '), md(curTech.examples)]),
+                          curTech.incubation &&
+                            m('p', [m('span.bold', 'Incubation: '), md(curTech.incubation)]),
+                          curTech.effectDuration &&
+                            m('p', [
+                              m('span.bold', 'Effect duration: '),
+                              md(curTech.effectDuration),
+                            ]),
+                          m('h5.orange.separator', 'Keep in mind'),
+                          curTech.practical &&
+                            m('p', [
+                              m(
+                                'span.bold[title=This information is not medical advice, please read the disclaimer!]',
+                                m.trust('Practical execution<sup class="red-text">*</sup>: ')
+                              ),
+                              md(curTech.practical),
+                            ]),
                           curTech.sideEffects &&
                             m('p', [
                               m('span.bold', 'Side-effects: '),
@@ -181,8 +209,6 @@ export const TechnologyPage: MeiosisComponent = () => {
                               m('span.bold', 'Ethical considerations: '),
                               md(resolveChoice(curTech.hasEthical, curTech.ethical)),
                             ]),
-                          curTech.examples &&
-                            m('p', [m('span.bold', 'Examples: '), md(curTech.examples)]),
                           similarTech &&
                             m(
                               'p',
@@ -288,15 +314,8 @@ export const TechnologyPage: MeiosisComponent = () => {
                                 `Owner: ${owner.name}`,
                                 m(Icon, { iconName: 'close', className: 'right' })
                               ),
-                              reviewers.length > 0 &&
-                                m(
-                                  'p',
-                                  m(
-                                    'span',
-                                    `Reviewer${reviewers.length > 1 ? 's' : ''}: `,
-                                    joinListWithAnd(reviewers.map((r) => r.name)) + '.'
-                                  )
-                                ),
+                              updated &&
+                                m('p', [m('span.bold', `Last update: ${updated.toDateString()}`)]),
                               m('p', [
                                 m('span.bold', 'Status: '),
                                 getOptionsLabel(statusOptions, curTech.status) + '.',
