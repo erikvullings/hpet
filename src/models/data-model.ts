@@ -139,8 +139,7 @@ export enum YES_NO {
 }
 
 export enum INVASIVENESS_OBTRUSIVENESS {
-  NO = 1,
-  LOW,
+  LOW = 1,
   MEDIUM,
   HIGH,
 }
@@ -219,7 +218,7 @@ export type Technology = {
   technology: string;
   /** Specific application */
   application: string;
-  category: TECHNOLOGY_CATEGORY[];
+  category: TECHNOLOGY_CATEGORY;
   hpeClassification: HPE_CLASSIFICATION;
   /** Similar technologies */
   similar: ID[];

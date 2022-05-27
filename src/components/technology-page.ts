@@ -1,6 +1,7 @@
 import m from 'mithril';
 import { FlatButton, Icon } from 'mithril-materialized';
 import { UIForm, LayoutForm } from 'mithril-ui-form';
+import { resolveImg } from '../assets/images';
 import { Dashboards, defaultModel, Technology } from '../models';
 import { MeiosisComponent, routingSvc } from '../services';
 import {
@@ -121,11 +122,7 @@ export const TechnologyPage: MeiosisComponent = () => {
                             curTech.category &&
                               m('p', [
                                 m('span.bold', 'Category: '),
-                                joinListWithAnd(
-                                  curTech.category.map((c) =>
-                                    getOptionsLabel(technologyCategoryOptions, c)
-                                  )
-                                ) + '.',
+                                getOptionsLabel(technologyCategoryOptions, curTech.category) + '.',
                               ]),
                             curTech.hpeClassification &&
                               m('p', [
@@ -141,7 +138,7 @@ export const TechnologyPage: MeiosisComponent = () => {
                                 getOptionsLabel(mainCapabilityOptions, curTech.mainCap) + '.',
                               ]),
                             curTech.specificCap &&
-                              curTech.specificCap.length &&
+                              curTech.specificCap.length > 0 &&
                               m('p', [
                                 m('span.bold', 'Specific capability: '),
                                 joinListWithAnd(
@@ -169,7 +166,10 @@ export const TechnologyPage: MeiosisComponent = () => {
                       curTech.url &&
                         m(
                           '.col.s6.m6',
-                          m('img.responsive-img', { src: curTech.url, alt: curTech.technology })
+                          m('img.responsive-img', {
+                            src: resolveImg(curTech.url),
+                            alt: curTech.technology,
+                          })
                         ),
                       m(
                         '.col.s12',

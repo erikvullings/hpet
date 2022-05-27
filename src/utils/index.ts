@@ -178,18 +178,17 @@ export const invasivenessOptions = [
   {
     id: INVASIVENESS_OBTRUSIVENESS.LOW,
     label: 'Low',
-    title: 'No physical substance enters the body.',
+    title: 'No physical substance enters the body',
   },
   {
     id: INVASIVENESS_OBTRUSIVENESS.MEDIUM,
     label: 'Medium',
-    title: 'Supplements, heavy training, interventions with low risk.',
+    title: 'Supplements, heavy training, interventions with low risk',
   },
   {
     id: INVASIVENESS_OBTRUSIVENESS.HIGH,
     label: 'High',
-    title:
-      'High-impact pharma, implants, body modifications, interventions with high risk or pain.',
+    title: 'High-impact pharma, implants, body modifications, interventions with high risk or pain',
   },
 ];
 
@@ -198,19 +197,19 @@ export const maturityOptions = [
     id: MATURITY.LOW,
     label: 'Low',
     title:
-      'Little to no research has been performed on the intervention. Existing research is inconclusive about the effectiveness.',
+      'Little to no research has been performed on the intervention. Existing research is inconclusive about the effectiveness',
   },
   {
     id: MATURITY.MEDIUM,
     label: 'Medium',
     title:
-      'A small body of research exists indicating effectiveness of the technology. Low TRL level applications.',
+      'A small body of research exists indicating effectiveness of the technology. Low TRL level applications',
   },
   {
     id: MATURITY.HIGH,
     label: 'High',
     title:
-      'One or more meta-analyses indicate effectiveness. The technology is already applied in practice.',
+      'One or more meta-analyses indicate effectiveness. The technology is already applied in practice',
   },
 ];
 
@@ -391,13 +390,13 @@ export const technologyForm = (
     {
       id: 'effectDuration',
       label: 'Effect duration',
-      type: 'text',
+      type: 'textarea',
       className: 'col s12',
     },
     {
       id: 'incubation',
       label: 'Effect incubation',
-      type: 'text',
+      type: 'textarea',
       className: 'col s12',
     },
     {

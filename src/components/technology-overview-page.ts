@@ -1,5 +1,6 @@
 import m from 'mithril';
 import { FlatButton, Icon, Select, uniqueId } from 'mithril-materialized';
+import { resolveImg } from '../assets/images';
 import { Dashboards, Technology } from '../models';
 import { MeiosisComponent, routingSvc } from '../services';
 import { mainCapabilityOptions } from '../utils';
@@ -91,7 +92,7 @@ export const TechnologyOverviewPage: MeiosisComponent = () => {
                     {
                       href: routingSvc.href(Dashboards.TECHNOLOGY, `?id=${t.id}`),
                     },
-                    m('img', { src: t.url, alt: t.technology })
+                    m('img', { src: resolveImg(t.url), alt: t.technology })
                   ),
                   m(
                     'span.card-title.bold',
