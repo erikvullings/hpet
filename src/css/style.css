@@ -622,3 +622,7 @@ ul.projects > li > span.project-id {
 h5.separator {
   padding: 5px;
 }
+
+.sharpen {
+  background: rgba(255, 255, 255, 0.5);
+}

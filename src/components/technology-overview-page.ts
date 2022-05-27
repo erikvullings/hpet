@@ -92,12 +92,14 @@ export const TechnologyOverviewPage: MeiosisComponent = () => {
                     {
                       href: routingSvc.href(Dashboards.TECHNOLOGY, `?id=${t.id}`),
                     },
-                    m('img', { src: resolveImg(t.url), alt: t.technology })
-                  ),
-                  m(
-                    'span.card-title.bold',
-                    { className: isBookmarked ? 'amber-text' : 'black-text' },
-                    t.technology
+                    [
+                      m('img', { src: resolveImg(t.url), alt: t.technology }),
+                      m(
+                        'span.card-title.bold.sharpen',
+                        { className: isBookmarked ? 'amber-text' : 'black-text' },
+                        t.technology
+                      ),
+                    ]
                   ),
                 ]),
                 m('.card-content', m('p', t.application)),
