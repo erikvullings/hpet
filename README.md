@@ -1,2 +1,1 @@
-# hpet
-App to display Human Performance Enhancing Technologies.
+# DEPRECATED - [Moved here](https://github.com/tno/hei).
